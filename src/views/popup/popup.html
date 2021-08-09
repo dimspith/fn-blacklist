@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../../external/bulma.min.css"></link>
+        <script src="../../external/svg-loader.min.js" async></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="popup.css">
+        
+    </head>
+    <body>
+        <div class="mx-3">
+            <div class="title mt-1 is-6">
+                FakeNews Blocker <strong>v0.1.0</strong>
+            </div>
+            <div class="columns is-mobile box py-0">
+                <div class="column is-one-third">
+                    <button class="button is-danger is-fullwidth" id="OnOffButton">
+                        <span class="icon-text">
+                            <span class="icon is-large">
+                                <svg data-src="icons/power.svg"></svg>
+                            </span>
+                            <span id="OnOff"></span>
+                        </span>
+                    </button>
+                </div>
+                <div class="column is-one-third">
+                    <button class="button is-info is-fullwidth">
+                        <span class="icon-text">
+                            <span class="icon is-large">
+                                <svg data-src="icons/plus-circle.svg"></svg>
+                            </span>
+                            <span>Whitelist</span>
+                        </span>
+                    </button>
+                </div>
+                <div class="column is-one-third">
+                    <button class="button is-primary is-fullwidth">
+                        <span class="icon-text">
+                            <span class="icon is-large">
+                                <svg data-src="icons/settings.svg"></svg>
+                            </span>
+                            <span>Settings</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="mt-2 blocklist columns is-mobile is-align-items-center is-justify-content-space-between">
+                <p class="column">Last update:</p>
+                <strong class="column" id="lastUpdate"></strong>
+                <button class="column button is-warning is-fullwidth is-light" id="updateButton">Update</button>
+            </div>
+        </div>
+        <script src="popup.js"></script>
+    </body>
+</html>

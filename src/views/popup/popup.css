@@ -1,0 +1,14 @@
+body {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* overflow: hidden; */
+    /* white-space: nowrap; */
+    /* width: fit-content; */
+    /* width: -moz-fit-content; */
+    width: 500px;
+}
+
+.title, .blocklist {
+    text-align: center;
+}
+

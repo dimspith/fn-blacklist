@@ -1,0 +1,31 @@
+{
+  "name": "fakenews-extension",
+  "version": "0.1.0",
+  "description": "Detect fake news",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimspith/fakenews-extension.git"
+  },
+  "keywords": [
+    "fake",
+    "news",
+    "extension",
+    "chrome",
+    "chromium",
+    "security",
+    "javascript"
+  ],
+  "author": "dimspith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dimspith/fakenews-extension/issues"
+  },
+  "homepage": "https://github.com/dimspith/fakenews-extension#readme",
+  "dependencies": {
+    "@types/chrome": "^0.0.151",
+  }
+}
