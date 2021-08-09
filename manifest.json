@@ -1,8 +1,8 @@
 {
-    "name": "FakeNews Blocker",
+    "name": "FNBlacklist",
     "version": "1.0",
     "manifest_version": 2,
-    "description": "Blocks possible Fake News sites based on a content-agnostic ML classifier.",
+    "description": "A browser extension that blocks fake news sites according to a content-agnostic ML classifier",
 
     "permissions": [
         "webRequest",
@@ -26,7 +26,7 @@
 
     "browser_action": {
  		"default_popup": "src/views/popup/popup.html",
- 		"default_title": "Fake News Blocker"
+ 		"default_title": "FNBlacklist"
  	}
 }
 

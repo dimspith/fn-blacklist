@@ -1,14 +1,14 @@
 {
-  "name": "fakenews-extension",
+  "name": "FNBlacklist",
   "version": "0.1.0",
-  "description": "Detect fake news",
+  "description": "Block fake news",
   "main": "background.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dimspith/fakenews-extension.git"
+    "url": "git+https://github.com/dimspith/FNBlacklist.git"
   },
   "keywords": [
     "fake",
@@ -22,9 +22,9 @@
   "author": "dimspith",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dimspith/fakenews-extension/issues"
+    "url": "https://github.com/dimspith/FNBlacklist/issues"
   },
-  "homepage": "https://github.com/dimspith/fakenews-extension#readme",
+  "homepage": "https://github.com/dimspith/FNBlacklist/#readme",
   "dependencies": {
     "@types/chrome": "^0.0.151",
   }
