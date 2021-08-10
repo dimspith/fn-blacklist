@@ -10,13 +10,14 @@ and aims to make use of this information to help curb the spread of these sites.
 It leverages a blacklist provided by an external host that performs the analysis.
 The backend API can be found [[https://github.com/dimspith/fnapi][here]].
 
-** Features
-- Blocks sites contained in the blacklist
-- Supports whitelisting sites
-- More to come!
-
 ** Tooling used
-- Vanilla HTML/CSS/JS without using any frameworks
 - [[https://bulma.io/][Bulma CSS]] for styling
-- *date-fns* for handling update times
-
+- [[https://github.com/shubhamjain/svg-loader][svg-loader]] javascript library for loading  svg icons.
+  
+** *TODO LIST*
+- [ ] Allow the use of a custom API to fetch blacklist (localhost:5000 is used for now)
+- [ ] Fix Popup UI to be more consistent
+- [ ] Add the ability to whitelist pages
+- [ ] Implement a Settings page
+- [ ] Make the page block page more informative
+- [ ] Allow auto-updating blacklist

@@ -1,42 +1,76 @@
 "use strict";
 
+// Get the background page. used for console logging
+const bg = chrome.extension.getBackgroundPage();
+
+// State of the extension (enabled/disabled)
+var enabled = false;
+
+// UI elements to be 
+const powerButton = document.getElementById("OnOffButton");
+const powerButtonText = document.getElementById("OnOff");
+
+const updateButton = document.getElementById("updateButton");
+const lastUpdateElem = document.getElementById("lastUpdate");
+
+// Enables or disables the extension by changing a localstorage variable
+// and notifying the background script
+const enableOrDisableExtension = () => {
+    enabled = !enabled;
+    chrome.storage.local.set({'enabled': enabled}, () => {});
+    powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
+    if(enabled) {
+        powerButton.classList.replace('is-danger', 'is-success');
+    } else {
+        powerButton.classList.replace('is-success', 'is-danger');
+    }
+};
+
+// Taken from uBlock Origin's code
+const elapsedTimeToString = (timestamp) => {
+    let value = (Date.now() - timestamp) / 60000;
+
+    if (value < 2 ) {
+        return('Less than a minute ago');
+    }
+    if (value < 60) {
+        return('Many minutes ago');
+    }
+    value /= 60;
+    if (value < 2) {
+        return('An hour ago');
+    }
+    if (value < 24) {
+        return('Many hours ago');
+    }
+    value /= 24;
+    if (value < 2) {
+        return('One day ago');
+    }
+    return('Many days ago');
+};
+
+// Updates the blacklist (WIP)
+const updateBlacklist = () => {
+    let current = Date.now();
+    updateButton.classList.add('is-loading');
+    fetch("http://localhost:5000/").then((response) => {
+        return response.json();
+    }).then((data) => {
+        chrome.storage.local.set({'urls': data.sites});
+
+        chrome.runtime.sendMessage({message: "update"});
+
+        updateButton.classList.remove('is-loading');
+    });
+    lastUpdateElem.innerHTML = elapsedTimeToString(current);
+    chrome.storage.local.set({'lastUpdate': current});
+};
+
+// When the popup UI is loaded, add listeners
 document.addEventListener("DOMContentLoaded", function () {
-    var enabled = false;
-    var lastUpdate;
 
-    const powerButton = document.getElementById("OnOffButton");
-    const powerButtonText = document.getElementById("OnOff");
-
-    const updateButton = document.getElementById("updateButton");
-    const lastUpdateElem = document.getElementById("lastUpdate");
-
-    // Enables or disables the extension by changing a localstorage variable
-    // and notifying the background script
-    const enableOrDisableExtension = () => {
-        enabled = !enabled;
-        chrome.storage.local.set({'enabled': enabled}, () => {});
-        powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
-        if(enabled) {
-            powerButton.classList.replace('is-danger', 'is-success');
-        } else {
-            powerButton.classList.replace('is-success', 'is-danger');
-        }
-    };
-
-    // Updates the blocklist (WIP)
-    const updateBlocklist = () => {
-        let current = new Date();
-        let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-        let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-        let dateTime = cDate + ' ' + cTime;
-        updateButton.classList.add('is-loading');
-        setTimeout(function() {
-            updateButton.classList.remove('is-loading');
-        }, 1000);
-        lastUpdateElem.innerHTML = dateTime;
-        chrome.storage.local.set({'lastUpdate': dateTime}, () => {});
-    };
-
+    // Get extension state (ON/OFF) 
     chrome.storage.local.get('enabled', data => {
         enabled = !!data.enabled;
         powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
@@ -47,17 +81,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Show elapsed time since last update
     chrome.storage.local.get('lastUpdate', data => {
-        lastUpdate = data.lastUpdate;
+        let lastUpdate = data.lastUpdate;
         if (typeof lastUpdate !== 'undefined') {
-            lastUpdateElem.innerHTML = lastUpdate;
+            lastUpdateElem.innerHTML = elapsedTimeToString(lastUpdate);
         } else {
             lastUpdateElem.innerHTML = "never";
         }
     });
 
     powerButton.addEventListener("click", enableOrDisableExtension);
-    updateButton.addEventListener("click", updateBlocklist);
+    updateButton.addEventListener("click", updateBlacklist);
+
 });
 
 
