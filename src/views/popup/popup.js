@@ -54,7 +54,7 @@ const elapsedTimeToString = (timestamp) => {
 const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
-    fetch("http://localhost:5000/").then((response) => {
+    fetch("http://localhost:5000/api/fetch").then((response) => {
         return response.json();
     }).then((data) => {
         chrome.storage.local.set({'urls': data.sites});
