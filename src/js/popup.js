@@ -12,6 +12,7 @@ const powerButtonText = document.getElementById("OnOff");
 
 const updateButton = document.getElementById("updateButton");
 const lastUpdateElem = document.getElementById("lastUpdate");
+const apiWarning = document.getElementById("api-warning");
 
 // Enables or disables the extension by changing a localstorage variable
 // and notifying the background script
@@ -54,17 +55,21 @@ const elapsedTimeToString = (timestamp) => {
 const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
-    fetch("http://localhost:5000/api/fetch").then((response) => {
-        return response.json();
-    }).then((data) => {
-        chrome.storage.local.set({'urls': data.sites});
-
-        chrome.runtime.sendMessage({message: "update"});
-
-        updateButton.classList.remove('is-loading');
-    });
-    lastUpdateElem.innerHTML = elapsedTimeToString(current);
-    chrome.storage.local.set({'lastUpdate': current});
+    fetch("http://localhost:5000/api/fetch")
+        .then(response => response.json())
+        .then((data) => {
+            if(!(apiWarning.classList.contains('is-hidden'))) {
+                apiWarning.classList.add('is-hidden');
+            }
+            chrome.storage.local.set({'urls': data.sites});
+            chrome.runtime.sendMessage({message: "update"});
+            updateButton.classList.remove('is-loading');
+            lastUpdateElem.innerHTML = elapsedTimeToString(current);
+            chrome.storage.local.set({'lastUpdate': current});                        
+        }) .catch( _ => {
+            updateButton.classList.remove('is-loading');
+            apiWarning.classList.remove('is-hidden');
+        });
 };
 
 // When the popup UI is loaded, add listeners
