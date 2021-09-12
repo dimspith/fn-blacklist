@@ -11,7 +11,7 @@ const blockRequest = (request) => {
             bg.console.log("Blocked!");
             bg.console.log(request);
             chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-                const blocked = chrome.extension.getURL("src/views/blocked/blocked.html").concat(`?blocked-page=${request.url}`);
+                const blocked = chrome.extension.getURL("src/blocked.html").concat(`?blocked-page=${request.url}`);
                 chrome.tabs.update(tab.id, {url: blocked});
             });
         }

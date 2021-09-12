@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="../../external/bulma.min.css"></link>
-        <link rel="stylesheet" href="blocked.css"></link>
-        <script src="blocked.js"></script>
-        <script src="../../external/svg-loader.min.js" async></script>
+        <link rel="stylesheet" href="css/bulma.min.css"></link>
+        <link rel="stylesheet" href="css/blocked.css"></link>
+        <script src="js/blocked.js"></script>
+        <script src="js/feather.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <div id="main" class="mx-auto box p-4">
-            <div id="alert">
-                <div id="alert-icon" class="has-text-centered"></div>                
-            </div>
+            <div class="has-text-centered">
+                <i data-feather="alert-triangle"></i>
+            </div>                
             <h1 class="has-text-centered title is-3">Blocked!</h1>
             <div class="mx-2">
                 <strong>Fake News Blacklist</strong> has prevented the following page from loading:
@@ -29,8 +29,8 @@
                 <div class="column is-one-third">
                     <button class="button is-warning is-fullwidth">Temporarily</button>                    
                 </div>
-                
             </div>
         </div>
+        <script src="js/feather-replace.js"></script>
     </body>
 </html>

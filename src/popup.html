@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="../../external/bulma.min.css"></link>
-        <script src="../../external/svg-loader.min.js" async></script>
+        <link rel="stylesheet" href="css/bulma.min.css"></link>
+        <script src="js/feather.min.js" async></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="popup.css">
+        <link rel="stylesheet" href="css/popup.css">
     </head>
     <body>
         <div class="mx-3">
@@ -16,7 +16,7 @@
                     <button class="button is-danger is-fullwidth" id="OnOffButton">
                         <span class="icon-text">
                             <span class="icon is-large">
-                                <svg data-src="icons/power.svg"></svg>
+                                <i data-feather="power"></i>
                             </span>
                             <span id="OnOff"></span>
                         </span>
@@ -26,17 +26,17 @@
                     <button class="button is-info is-fullwidth">
                         <span class="icon-text">
                             <span class="icon is-large">
-                                <svg data-src="icons/plus-circle.svg"></svg>
+                                <i data-feather="plus-circle"></i>
                             </span>
                             <span>Whitelist</span>
                         </span>
                     </button>
                 </div>
                 <div class="column is-one-third">
-                    <button class="button is-primary is-fullwidth">
+                    <button class="button is-link is-fullwidth">
                         <span class="icon-text">
                             <span class="icon is-large">
-                                <svg data-src="icons/settings.svg"></svg>
+                                <i data-feather="settings"></i>
                             </span>
                             <span>Settings</span>
                         </span>
@@ -49,6 +49,7 @@
                 <button class="column button is-warning is-fullwidth is-light" id="updateButton">Update</button>
             </div>
         </div>
-        <script src="popup.js"></script>
+        <script src="js/popup.js"></script>
+        <script src="js/feather-replace.js"></script>
     </body>
 </html>

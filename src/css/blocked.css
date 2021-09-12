@@ -1,0 +1,14 @@
+html {
+    background-color: #eeeeee;
+}
+
+#main {
+    width: 500px;
+    margin-top: 120px;
+}
+
+.feather {
+    width: 100px;
+    height: 100px;
+    color: orange;
+}
