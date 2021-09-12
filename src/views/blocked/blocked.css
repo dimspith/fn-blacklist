@@ -1,0 +1,16 @@
+html {
+    background-color: #eeeeee;
+}
+
+#main {
+    width: 500px;
+    margin-top: 120px;
+}
+
+#alert-icon {
+    height: 100px;
+    background-size: 100px;
+    background-image: url(icons/alert-triangle.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}

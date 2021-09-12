@@ -9,9 +9,10 @@ const blockRequest = (request) => {
     chrome.storage.local.get(['enabled'], data => {
         if (data.enabled && request.type == "main_frame") {
             bg.console.log("Blocked!");
-
+            bg.console.log(request);
             chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-                chrome.tabs.update(tab.id, {url: chrome.extension.getURL("src/views/blocked/blocked.html")});
+                const blocked = chrome.extension.getURL("src/views/blocked/blocked.html").concat(`?blocked-page=${request.url}`);
+                chrome.tabs.update(tab.id, {url: blocked});
             });
         }
     });  

@@ -2,12 +2,35 @@
 <html>
     <head>
         <link rel="stylesheet" href="../../external/bulma.min.css"></link>
+        <link rel="stylesheet" href="blocked.css"></link>
+        <script src="blocked.js"></script>
         <script src="../../external/svg-loader.min.js" async></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <div class="title is-1">
-            Blocked!
+        <div id="main" class="mx-auto box p-4">
+            <div id="alert">
+                <div id="alert-icon" class="has-text-centered"></div>                
+            </div>
+            <h1 class="has-text-centered title is-3">Blocked!</h1>
+            <div class="mx-2">
+                <strong>Fake News Blacklist</strong> has prevented the following page from loading:
+            </div>
+            <div class="columns is-centered py-4 mx-2">
+                <code class="column has-text-centered" id="blocked-page"></code>                
+            </div>
+            <div class="py-2">
+                <div class="subtitle has-text-centered">Disable blocking for this page:</div>
+            </div>
+            <div class="columns is-centered">
+                <div class="column is-one-third">
+                    <button class="button is-info is-fullwidth">Permanently</button>                    
+                </div>
+                <div class="column is-one-third">
+                    <button class="button is-warning is-fullwidth">Temporarily</button>                    
+                </div>
+                
+            </div>
         </div>
     </body>
 </html>
