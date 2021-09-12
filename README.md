@@ -12,12 +12,4 @@ The backend API can be found [here](https://github.com/dimspith/fnapi).
 
 ### Tooling used
 - [Bulma CSS](https://bulma.io/) for styling
-- [svg-loader](https://github.com/shubhamjain/svg-loader) javascript library for loading  svg icons.
-  
-### TODO LIST
-- [ ] Allow the use of a custom API to fetch blacklist (localhost:5000 is used for now)
-- [ ] Fix Popup UI to be more consistent
-- [ ] Add the ability to whitelist pages
-- [ ] Implement a Settings page
-- [ ] Make the page block page more informative
-- [ ] Allow auto-updating blacklist
+- [feathericons](https://github.com/feathericons/feather) javascript library for loading svg icons.
