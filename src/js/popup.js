@@ -9,6 +9,7 @@ var enabled = false;
 // UI elements to be 
 const powerButton = document.getElementById("OnOffButton");
 const powerButtonText = document.getElementById("OnOff");
+const settingsButton = document.getElementById("SettingsButton")
 
 const updateButton = document.getElementById("updateButton");
 const lastUpdateElem = document.getElementById("lastUpdate");
@@ -98,6 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     powerButton.addEventListener("click", enableOrDisableExtension);
     updateButton.addEventListener("click", updateBlacklist);
+    settingsButton.addEventListener('click', function() {
+        if (chrome.runtime.openOptionsPage) {
+            chrome.runtime.openOptionsPage();
+        } else {
+            window.open(chrome.runtime.getURL('options.html'));
+        }
+    });
 
 });
 
