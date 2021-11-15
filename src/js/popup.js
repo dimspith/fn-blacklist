@@ -1,4 +1,6 @@
-"use strict";
+'use strict';
+
+import * as utils from './utils.js';
 
 // Get the background page. used for console logging
 const bg = chrome.extension.getBackgroundPage();
@@ -6,10 +8,10 @@ const bg = chrome.extension.getBackgroundPage();
 // State of the extension (enabled/disabled)
 var enabled = false;
 
-// UI elements to be 
+// UI elements
 const powerButton = document.getElementById("OnOffButton");
 const powerButtonText = document.getElementById("OnOff");
-const settingsButton = document.getElementById("SettingsButton")
+const settingsButton = document.getElementById("SettingsButton");
 
 const updateButton = document.getElementById("updateButton");
 const lastUpdateElem = document.getElementById("lastUpdate");
@@ -28,29 +30,6 @@ const enableOrDisableExtension = () => {
     }
 };
 
-// Taken from uBlock Origin's code
-const elapsedTimeToString = (timestamp) => {
-    let value = (Date.now() - timestamp) / 60000;
-
-    if (value < 2 ) {
-        return('Less than a minute ago');
-    }
-    if (value < 60) {
-        return('Many minutes ago');
-    }
-    value /= 60;
-    if (value < 2) {
-        return('An hour ago');
-    }
-    if (value < 24) {
-        return('Many hours ago');
-    }
-    value /= 24;
-    if (value < 2) {
-        return('One day ago');
-    }
-    return('Many days ago');
-};
 
 // Updates the blacklist (WIP)
 const updateBlacklist = () => {
@@ -91,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.storage.local.get('lastUpdate', data => {
         let lastUpdate = data.lastUpdate;
         if (typeof lastUpdate !== 'undefined') {
-            lastUpdateElem.innerHTML = elapsedTimeToString(lastUpdate);
+            lastUpdateElem.innerHTML = utils.elapsedTimeToString(lastUpdate);
         } else {
             lastUpdateElem.innerHTML = "never";
         }

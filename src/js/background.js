@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Get the background page. used for console logging
 const bg = chrome.extension.getBackgroundPage();
