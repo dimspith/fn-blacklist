@@ -44,7 +44,7 @@ const updateBlacklist = () => {
             chrome.storage.local.set({'urls': data.sites});
             chrome.runtime.sendMessage({message: "update"});
             updateButton.classList.remove('is-loading');
-            lastUpdateElem.innerHTML = elapsedTimeToString(current);
+            lastUpdateElem.innerHTML = utils.elapsedTimeToString(current);
             chrome.storage.local.set({'lastUpdate': current});                        
         }) .catch( _ => {
             updateButton.classList.remove('is-loading');
