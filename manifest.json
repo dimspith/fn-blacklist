@@ -7,12 +7,12 @@
     "permissions": [
         "webRequest",
         "webRequestBlocking",
+        "unlimitedStorage",
         "tabs",
         "storage",
         "http://*/*",
         "https://*/*"
     ],
-    
     "icons": {"128": "src/icons/fakenews128.png"},
 
     "background": {
