@@ -37,6 +37,7 @@ const  getQueryStringParams = (params, url) => {
 };
 
 const getCurrentSite = (url) => {
+    bg.console.log("Current site: " + url);
     if(url.startsWith("chrome-extension://" + window.document.domain)) {
         return getQueryStringParams('blocked-page', url);
     } else {

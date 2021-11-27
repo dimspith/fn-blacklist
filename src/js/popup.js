@@ -52,7 +52,7 @@ const enableOrDisableExtension = () => {
 const whitelistCurrentPage = () => {
     chrome.storage.local.get(['whitelist'], (data) => {
         chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-            const blockedURL = utils.getQueryStringParams('blocked-page', tab[0].url);
+            const blockedURL = utils.getCurrentSite(tab[0].url);
             var urls = data.whitelist;
             bg.console.log(urls);
             if(typeof(urls) == "undefined" || Object.entries(urls).length === 0) {
@@ -146,5 +146,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-
-
