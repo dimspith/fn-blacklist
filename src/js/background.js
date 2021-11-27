@@ -7,8 +7,8 @@ const bg = chrome.extension.getBackgroundPage();
 const blockRequest = (request) => {
     chrome.storage.local.get(['enabled'], data => {
         if (data.enabled) {
-            bg.console.log("Blocked!");
             chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+                
                 let blocked = chrome.extension.getURL("src/blocked.html").concat(`?blocked-page=${request.url}`);
                 chrome.tabs.update(tab.id, {url: blocked});
             });
@@ -29,7 +29,10 @@ function updateListener() {
             try {
                 chrome.webRequest.onBeforeRequest.addListener(
                     blockRequest,
-                    {urls: urls.urls},
+                    {
+                        urls: urls.urls,
+                        types: ["main_frame"]
+                    },
                     ['blocking']);
             } catch (e) {
                 bg.console.error(e);

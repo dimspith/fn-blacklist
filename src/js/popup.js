@@ -8,10 +8,29 @@ const bg = chrome.extension.getBackgroundPage();
 // State of the extension (enabled/disabled)
 var enabled = false;
 
+const notWhitelistedHTML = `
+<span class="icon-text">
+    <span class="icon is-large">
+        <i data-feather="plus-circle"></i>
+    </span>
+    <span>Whitelist</span>
+</span>`;
+
+const whitelistedHTML = `
+<span class="icon-text">
+    <span class="icon is-large">
+        <i data-feather="minus-circle"></i>
+    </span>
+    <span>Whitelist</span>
+</span>
+`;
+
+
 // UI elements
 const powerButton = document.getElementById("OnOffButton");
 const powerButtonText = document.getElementById("OnOff");
 const settingsButton = document.getElementById("SettingsButton");
+const whitelistButton = document.getElementById("whitelistButton");
 
 const updateButton = document.getElementById("updateButton");
 const lastUpdateElem = document.getElementById("lastUpdate");
@@ -21,7 +40,7 @@ const apiWarning = document.getElementById("api-warning");
 // and notifying the background script
 const enableOrDisableExtension = () => {
     enabled = !enabled;
-    chrome.storage.local.set({'enabled': enabled}, () => {});
+    chrome.storage.local.set({'enabled': enabled});
     powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
     if(enabled) {
         powerButton.classList.replace('is-danger', 'is-success');
@@ -30,8 +49,34 @@ const enableOrDisableExtension = () => {
     }
 };
 
+const whitelistCurrentPage = () => {
+    chrome.storage.local.get(['whitelist'], (data) => {
+        chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+            const blockedURL = utils.getQueryStringParams('blocked-page', tab[0].url);
+            var urls = data.whitelist;
+            bg.console.log(urls);
+            if(typeof(urls) == "undefined" || Object.entries(urls).length === 0) {
+                whitelistButton.classList.replace('is-info', 'is-danger');
+                whitelistButton.innerHTML = whitelistedHTML;                    
+                chrome.storage.local.set({'whitelist': [blockedURL]});
+            } else if (!urls.includes(blockedURL)){
+                whitelistButton.classList.replace('is-info', 'is-danger');
+                whitelistButton.innerHTML = whitelistedHTML;                    
+                urls.push(blockedURL);
+                chrome.storage.local.set({'whitelist': urls});
+            } else {
+                whitelistButton.classList.replace('is-danger', 'is-info');
+                whitelistButton.innerHTML = notWhitelistedHTML;
+                urls.splice(urls.indexOf(blockedURL), 1);
+                chrome.storage.local.set({'whitelist': urls});
+            }
+            feather.replace();
+        });
+    });
+};
 
-// Updates the blacklist (WIP)
+
+// updates the blacklist (WIP)
 const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
@@ -76,8 +121,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Display whitelist button based on current page's status
+    chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+        let status = utils.siteInWhitelist(tab[0].url);
+        status.then((status) => {
+            bg.console.log("Status: " + status);
+            if(status === true) {
+                whitelistButton.classList.replace('is-info', 'is-danger');
+                whitelistButton.innerHTML = whitelistedHTML;
+                feather.replace();
+            }
+        });
+    });
+
     powerButton.addEventListener("click", enableOrDisableExtension);
     updateButton.addEventListener("click", updateBlacklist);
+    whitelistButton.addEventListener("click", whitelistCurrentPage);
     settingsButton.addEventListener('click', function() {
         if (chrome.runtime.openOptionsPage) {
             chrome.runtime.openOptionsPage();

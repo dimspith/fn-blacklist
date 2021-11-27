@@ -1,5 +1,7 @@
 'use strict';
 
+const bg = chrome.extension.getBackgroundPage();
+
 // Taken from uBlock Origin's code
 const elapsedTimeToString = (timestamp) => {
     let value = (Date.now() - timestamp) / 60000;
@@ -24,4 +26,41 @@ const elapsedTimeToString = (timestamp) => {
     return('Many days ago');
 };
 
-export { elapsedTimeToString };
+const  getQueryStringParams = (params, url) => {
+  // first decode URL to get readable data
+  var href = decodeURIComponent(url);
+  // regular expression to get value
+  var regEx = new RegExp('[?&]' + params + '=([^&#]*)', 'i');
+  var value = regEx.exec(href);
+  // return the value if it exists
+  return value ? value[1] : null;
+};
+
+const getCurrentSite = (url) => {
+    if(url.startsWith("chrome-extension://" + window.document.domain)) {
+        return getQueryStringParams('blocked-page', url);
+    } else {
+        return url;
+    }
+};
+
+const siteInWhitelist = async (url) => {
+    return new Promise(resolve => {
+        chrome.storage.local.get('whitelist', (data) => {
+            let whitelist = data.whitelist;
+            bg.console.log("Whitelist: " + whitelist);
+            if(typeof(whitelist) == "undefined" || Object.entries(whitelist).length === 0) {
+                resolve(false);
+            } else if (whitelist.includes(getCurrentSite(url))){
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        }); 
+    });
+};
+
+export { elapsedTimeToString,
+         getQueryStringParams,
+         getCurrentSite,
+         siteInWhitelist };
