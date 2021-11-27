@@ -5,12 +5,14 @@ const bg = chrome.extension.getBackgroundPage();
 
 // Function ran when a site is blocked. By default it redirects to a custom page.
 const blockRequest = (request) => {
-    chrome.storage.local.get(['enabled'], data => {
+    chrome.storage.local.get(['enabled', 'whitelist'], data => {
         if (data.enabled) {
             chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-                
-                let blocked = chrome.extension.getURL("src/blocked.html").concat(`?blocked-page=${request.url}`);
-                chrome.tabs.update(tab.id, {url: blocked});
+                if(!typeof(whitelist) == "undefined" || !data.whitelist.includes(request.url)) {
+                    let blocked = chrome.extension.getURL("src/blocked.html")
+                        .concat(`?blocked-page=${request.url}`);
+                    chrome.tabs.update(tab.id, {url: blocked});                    
+                }
             });
         }
     });
