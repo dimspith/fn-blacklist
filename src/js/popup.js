@@ -52,9 +52,8 @@ const enableOrDisableExtension = () => {
 const whitelistCurrentPage = () => {
     chrome.storage.local.get(['whitelist'], (data) => {
         chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-            const blockedURL = utils.getCurrentSite(tab[0].url);
+            const blockedURL = utils.getCurrentDomain(tab[0].url);
             var urls = data.whitelist;
-            bg.console.log(urls);
             if(typeof(urls) == "undefined" || Object.entries(urls).length === 0) {
                 whitelistButton.classList.replace('is-info', 'is-danger');
                 whitelistButton.innerHTML = whitelistedHTML;                    
@@ -125,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
         let status = utils.siteInWhitelist(tab[0].url);
         status.then((status) => {
-            bg.console.log("Status: " + status);
             if(status === true) {
                 whitelistButton.classList.replace('is-info', 'is-danger');
                 whitelistButton.innerHTML = whitelistedHTML;

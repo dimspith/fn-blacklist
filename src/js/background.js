@@ -4,14 +4,16 @@
 const bg = chrome.extension.getBackgroundPage();
 
 // Function ran when a site is blocked. By default it redirects to a custom page.
+// Don't block the current domain is in the whitelist
 const blockRequest = (request) => {
     chrome.storage.local.get(['enabled', 'whitelist'], data => {
-        if (data.enabled) {
+        if(data.enabled) {
             chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-                if(!typeof(whitelist) == "undefined" || !data.whitelist.includes(request.url)) {
+                const domain = new URL(request.url).hostname.replace('www.','');
+                if(!data.hasOwnProperty('whitelist') ||!data.whitelist.includes(domain)) {
                     let blocked = chrome.extension.getURL("src/blocked.html")
                         .concat(`?blocked-page=${request.url}`);
-                    chrome.tabs.update(tab.id, {url: blocked});                    
+                    chrome.tabs.update(tab.id, {url: blocked});             
                 }
             });
         }
@@ -25,8 +27,6 @@ function updateListener() {
     }
     
     chrome.storage.local.get(['urls'], urls => {
-        bg.console.log("Updating urls...");
-        bg.console.log(JSON.stringify(urls, undefined, 4));
         if (urls.length !== 0) {
             try {
                 chrome.webRequest.onBeforeRequest.addListener(

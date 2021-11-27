@@ -36,12 +36,12 @@ const  getQueryStringParams = (params, url) => {
   return value ? value[1] : null;
 };
 
-const getCurrentSite = (url) => {
-    bg.console.log("Current site: " + url);
+const getCurrentDomain = (url) => {
+    let domain = new URL(url).hostname.replace('www.','');
     if(url.startsWith("chrome-extension://" + window.document.domain)) {
-        return getQueryStringParams('blocked-page', url);
+        return new URL(getQueryStringParams('blocked-page', url)).hostname.replace('www.','');
     } else {
-        return url;
+        return domain;
     }
 };
 
@@ -49,10 +49,9 @@ const siteInWhitelist = async (url) => {
     return new Promise(resolve => {
         chrome.storage.local.get('whitelist', (data) => {
             let whitelist = data.whitelist;
-            bg.console.log("Whitelist: " + whitelist);
             if(typeof(whitelist) == "undefined" || Object.entries(whitelist).length === 0) {
                 resolve(false);
-            } else if (whitelist.includes(getCurrentSite(url))){
+            } else if (whitelist.includes(getCurrentDomain(url))){
                 resolve(true);
             } else {
                 resolve(false);
@@ -63,5 +62,5 @@ const siteInWhitelist = async (url) => {
 
 export { elapsedTimeToString,
          getQueryStringParams,
-         getCurrentSite,
+         getCurrentDomain,
          siteInWhitelist };
