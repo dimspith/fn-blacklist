@@ -1,15 +1,25 @@
 'use strict';
 
+import {togglePageWhitelist} from "./utils.js";
+
 document.addEventListener("DOMContentLoaded", function () {
-    const blockedPage = document.getElementById("blocked-page");
-    const continueButton = document.getElementById("continue-button");
+    const blockedPage = document.getElementById("blockedPage");
+    const backButton = document.getElementById("backButton");
+    const goButton = document.getElementById("whitelistAndGoButton");
 
     const urlParams = new URLSearchParams(window.location.search);
     let blockedURL = urlParams.get('blocked-page');
 
+    const whitelistSiteAndGo = () => {
+        togglePageWhitelist(false);
+        window.location.href = blockedURL;
+    };
+    
     // Add blocked url to page
     blockedPage.innerHTML = blockedURL;
 
-    // Proceed to site when pressing continue
-    continueButton.href = blockedURL;
+    // Go to the previous site when pressing "Go Back"
+    backButton.addEventListener("click", () => {window.history.go(-1);});
+
+    goButton.addEventListener("click", whitelistSiteAndGo);
 });

@@ -8,24 +8,6 @@ const bg = chrome.extension.getBackgroundPage();
 // State of the extension (enabled/disabled)
 var enabled = false;
 
-const notWhitelistedHTML = `
-<span class="icon-text">
-    <span class="icon is-large">
-        <i data-feather="plus-circle"></i>
-    </span>
-    <span>Whitelist</span>
-</span>`;
-
-const whitelistedHTML = `
-<span class="icon-text">
-    <span class="icon is-large">
-        <i data-feather="minus-circle"></i>
-    </span>
-    <span>Whitelist</span>
-</span>
-`;
-
-
 // UI elements
 const powerButton = document.getElementById("OnOffButton");
 const powerButtonText = document.getElementById("OnOff");
@@ -48,32 +30,6 @@ const enableOrDisableExtension = () => {
         powerButton.classList.replace('is-success', 'is-danger');
     }
 };
-
-const whitelistCurrentPage = () => {
-    chrome.storage.local.get(['whitelist'], (data) => {
-        chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-            const blockedURL = utils.getCurrentDomain(tab[0].url);
-            var urls = data.whitelist;
-            if(typeof(urls) == "undefined" || Object.entries(urls).length === 0) {
-                whitelistButton.classList.replace('is-info', 'is-danger');
-                whitelistButton.innerHTML = whitelistedHTML;                    
-                chrome.storage.local.set({'whitelist': [blockedURL]});
-            } else if (!urls.includes(blockedURL)){
-                whitelistButton.classList.replace('is-info', 'is-danger');
-                whitelistButton.innerHTML = whitelistedHTML;                    
-                urls.push(blockedURL);
-                chrome.storage.local.set({'whitelist': urls});
-            } else {
-                whitelistButton.classList.replace('is-danger', 'is-info');
-                whitelistButton.innerHTML = notWhitelistedHTML;
-                urls.splice(urls.indexOf(blockedURL), 1);
-                chrome.storage.local.set({'whitelist': urls});
-            }
-            feather.replace();
-        });
-    });
-};
-
 
 // updates the blacklist (WIP)
 const updateBlacklist = () => {
@@ -126,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         status.then((status) => {
             if(status === true) {
                 whitelistButton.classList.replace('is-info', 'is-danger');
-                whitelistButton.innerHTML = whitelistedHTML;
+                whitelistButton.innerHTML = utils.whitelistedHTML;
                 feather.replace();
             }
         });
@@ -134,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     powerButton.addEventListener("click", enableOrDisableExtension);
     updateButton.addEventListener("click", updateBlacklist);
-    whitelistButton.addEventListener("click", whitelistCurrentPage);
+    whitelistButton.addEventListener("click", () => {utils.togglePageWhitelist(true);});
     settingsButton.addEventListener('click', function() {
         if (chrome.runtime.openOptionsPage) {
             chrome.runtime.openOptionsPage();
