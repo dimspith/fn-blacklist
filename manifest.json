@@ -5,9 +5,9 @@
     "description": "A browser extension that blocks fake news sites according to a content-agnostic ML classifier",
 
     "permissions": [
-        "tabs",
-        "storage",
-        "unlimitedStorage"
+        "webRequest",
+        "webRequestBlocking",
+        "unlimitedStorage",
     ],
     "host_permissions": [
         "http://*/*",

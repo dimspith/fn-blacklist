@@ -12,6 +12,7 @@ var enabled = false;
 const powerButton = document.getElementById("OnOffButton");
 const powerButtonText = document.getElementById("OnOff");
 const settingsButton = document.getElementById("SettingsButton");
+const whitelistButton = document.getElementById("whitelistButton");
 
 const updateButton = document.getElementById("updateButton");
 const lastUpdateElem = document.getElementById("lastUpdate");
@@ -21,7 +22,7 @@ const apiWarning = document.getElementById("api-warning");
 // and notifying the background script
 const enableOrDisableExtension = () => {
     enabled = !enabled;
-    chrome.storage.local.set({'enabled': enabled}, () => {});
+    chrome.storage.local.set({'enabled': enabled});
     powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
     if(enabled) {
         powerButton.classList.replace('is-danger', 'is-success');
@@ -30,8 +31,7 @@ const enableOrDisableExtension = () => {
     }
 };
 
-
-// Updates the blacklist (WIP)
+// updates the blacklist (WIP)
 const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
@@ -44,7 +44,7 @@ const updateBlacklist = () => {
             chrome.storage.local.set({'urls': data.sites});
             chrome.runtime.sendMessage({message: "update"});
             updateButton.classList.remove('is-loading');
-            lastUpdateElem.innerHTML = elapsedTimeToString(current);
+            lastUpdateElem.innerHTML = utils.elapsedTimeToString(current);
             chrome.storage.local.set({'lastUpdate': current});                        
         }) .catch( _ => {
             updateButton.classList.remove('is-loading');
@@ -76,8 +76,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Display whitelist button based on current page's status
+    chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+        let status = utils.siteInWhitelist(tab[0].url);
+        status.then((status) => {
+            if(status === true) {
+                whitelistButton.classList.replace('is-info', 'is-danger');
+                whitelistButton.innerHTML = utils.whitelistedHTML;
+                feather.replace();
+            }
+        });
+    });
+
     powerButton.addEventListener("click", enableOrDisableExtension);
     updateButton.addEventListener("click", updateBlacklist);
+    whitelistButton.addEventListener("click", () => {utils.togglePageWhitelist(true);});
     settingsButton.addEventListener('click', function() {
         if (chrome.runtime.openOptionsPage) {
             chrome.runtime.openOptionsPage();
@@ -87,5 +100,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-
-
