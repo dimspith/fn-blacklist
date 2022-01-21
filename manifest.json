@@ -4,10 +4,17 @@
     "manifest_version": 3,
     "description": "A browser extension that blocks fake news sites according to a content-agnostic ML classifier",
 
+    "declarative_net_request" : {
+        "rule_resources" : [{
+            "id": "ruleset_1",
+            "enabled": true,
+            "path": "rulesets/rules.json"
+        }]
+    },
     "permissions": [
-        "webRequest",
-        "webRequestBlocking",
         "unlimitedStorage",
+        "declarativeNetRequestWithHostAccess",
+        "tabs"
     ],
     "host_permissions": [
         "http://*/*",

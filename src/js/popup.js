@@ -3,7 +3,7 @@
 import * as utils from './utils.js';
 
 // Get the background page. used for console logging
-const bg = chrome.extension.getBackgroundPage();
+// const bg = chrome.extension.getBackgroundPage();
 
 // State of the extension (enabled/disabled)
 var enabled = false;
@@ -31,7 +31,7 @@ const enableOrDisableExtension = () => {
     }
 };
 
-// updates the blacklist (WIP)
+// Update the blacklist
 const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
@@ -98,5 +98,4 @@ document.addEventListener("DOMContentLoaded", function () {
             window.open(chrome.runtime.getURL('options.html'));
         }
     });
-
 });

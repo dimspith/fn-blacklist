@@ -1,7 +1,7 @@
 'use strict';
 
 // Get the background page. used for console logging
-const bg = chrome.extension.getBackgroundPage();
+// const bg = chrome.extension.getBackgroundPage();
 
 // Function ran when a site is blocked. By default it redirects to a custom page.
 // Don't block the current domain is in the whitelist
@@ -22,41 +22,8 @@ const blockRequest = (request) => {
 
 // Fetch the url list from localstorage and update the listener
 function updateListener() {
-    if (chrome.webRequest.onBeforeRequest.hasListener(blockRequest)) {
-        chrome.webRequest.onBeforeRequest.removeListener(blockRequest);
-    }
-    
-    chrome.storage.local.get(['urls'], urls => {
-        if (urls.length !== 0) {
-            try {
-                chrome.webRequest.onBeforeRequest.addListener(
-                    blockRequest,
-                    {
-                        urls: urls.urls,
-                        types: ["main_frame"]
-                    },
-                    ['blocking']);
-            } catch (e) {
-                bg.console.error(e);
-            }
-        }
-    });
+    // TODO
 };
-
-
-// Load url list if it exists when the extension is first enabled
-chrome.storage.local.get(['urls'], (urls) => {
-    if(urls) {
-        chrome.webRequest.onBeforeRequest.addListener(
-            blockRequest,
-            {
-                urls: urls.urls,
-                types: ["main_frame"]
-            },
-            ['blocking']
-        );
-    }
-});
 
 // Wait for messages from other pages withing the extension
 chrome.runtime.onMessage.addListener((request) => {
