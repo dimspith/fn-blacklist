@@ -42,8 +42,9 @@ const updateBlacklist = () => {
                 apiWarning.classList.add('is-hidden');
             }
             chrome.storage.local.set({'urls': data.sites});
-            chrome.runtime.sendMessage({message: "update"});
+            // chrome.runtime.sendMessage({message: "update"});
             updateButton.classList.remove('is-loading');
+            chrome.runtime.sendMessage({message: "update"});
             lastUpdateElem.innerHTML = utils.elapsedTimeToString(current);
             chrome.storage.local.set({'lastUpdate': current});                        
         }) .catch( _ => {

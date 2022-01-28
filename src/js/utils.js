@@ -66,7 +66,7 @@ const siteInWhitelist = async (url) => {
     return new Promise(resolve => {
         chrome.storage.local.get('whitelist', (data) => {
             let whitelist = data.whitelist;
-            if (typeof (whitelist) == "undefined" || Object.entries(whitelist).length === 0) {
+            if (!data.hasOwnProperty('whitelist')) {
                 resolve(false);
             } else if (whitelist.includes(getCurrentDomain(url))) {
                 resolve(true);
@@ -84,7 +84,9 @@ const togglePageWhitelist = (isPopup) => {
         chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             const blockedURL = getCurrentDomain(tab[0].url);
             var urls = data.whitelist;
-            if (Object.entries(urls).length === 0) {
+            chrome.runtime.sendMessage({message: "update"});
+            chrome.runtime.sendMessage({message: urls});
+            if (typeof(urls) == 'undefined') {
                 if(isPopup) {
                     whitelistButton.classList.replace('is-info', 'is-danger');
                     whitelistButton.innerHTML = whitelistedHTML;                    

@@ -59,6 +59,10 @@ chrome.tabs.onUpdated.addListener((tabId, change, tab) => {
 chrome.runtime.onMessage.addListener((request) => {
     // Message requesting a blacklist update
     if (request.message == "update") {
-        updateListener();
+        chrome.storage.local.get(function(data) {
+            console.log(data);
+        });
+    } else {
+        console.log(request.message);
     }
 });
