@@ -12,7 +12,6 @@ const isProtectedOrEmpty = (url) => {
     }
     for(var i = 0; i < protectedPrefixes.length; i++) {
         if(url.startsWith(protectedPrefixes[i])) {
-            console.log("Url is protected! Starts with: " + protectedPrefixes[i]);
             return true;
         }
     }
@@ -24,9 +23,13 @@ const isProtectedOrEmpty = (url) => {
 const blockIfFake = (url, tabID) => {
     chrome.storage.local.get(['enabled', 'whitelist'], data => {
         if(data.enabled) {
-            const domain = url.replace('www.','');
-            if(isProtectedOrEmpty(url) || (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain))) {
-                console.log(domain + " in whitelist or protected!");
+            if(isProtectedOrEmpty(url)) {
+                console.log("URL is protected!");
+                return;
+            }
+            const domain = (new URL(url)).hostname.replace('www.','');
+            if (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain)) {
+                console.log(domain + " in whitelist!");
             } else {
                 console.log(domain + " not whitelisted!");
                 let blocked = chrome.runtime.getURL("src/blocked.html")
