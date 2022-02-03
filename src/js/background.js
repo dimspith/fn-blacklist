@@ -21,7 +21,7 @@ const isProtectedOrEmpty = (url) => {
 // Function ran when a site is blocked. By default it redirects to a custom page.
 // Don't block the current domain is in the whitelist
 const blockIfFake = (url, tabID) => {
-    chrome.storage.local.get(['enabled', 'whitelist'], data => {
+    chrome.storage.local.get(['enabled', 'whitelist', 'urls'], data => {
         if(data.enabled) {
             if(isProtectedOrEmpty(url)) {
                 console.log("URL is protected!");
@@ -30,7 +30,7 @@ const blockIfFake = (url, tabID) => {
             const domain = (new URL(url)).hostname.replace('www.','');
             if (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain)) {
                 console.log(domain + " in whitelist!");
-            } else {
+            } else if (data.urls.includes(domain)) {
                 console.log(domain + " not whitelisted!");
                 let blocked = chrome.runtime.getURL("src/blocked.html")
                     .concat(`?blocked-page=${url}`);
