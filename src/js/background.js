@@ -61,7 +61,8 @@ chrome.tabs.onUpdated.addListener((tabId, change, tab) => {
 
 chrome.storage.local.get(['api'], data => {
     if(!data.hasOwnProperty('api')) {
-        chrome.storage.local.set({'api': "http://localhost:5000/api/fetch"});
+        // chrome.storage.local.set({'api': "http://localhost:5000/api/fetch"});
+        chrome.storage.local.set({'api': "https://fnapi.dimspith.com/api/fetch"});
     }
 });
 
