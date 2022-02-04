@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const urlParams = new URLSearchParams(window.location.search);
     let blockedURL = urlParams.get('blocked-page');
+    let domain = (new URL(blockedURL)).hostname;
 
     const whitelistSiteAndGo = () => {
         togglePageWhitelist(false);
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     
     // Add blocked url to page
-    blockedPage.innerHTML = blockedURL;
+    blockedPage.innerHTML = domain;
 
     // Go to the previous site when pressing "Go Back"
     backButton.addEventListener("click", () => {window.history.go(-2);});
