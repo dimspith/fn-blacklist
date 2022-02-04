@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     blockedPage.innerHTML = blockedURL;
 
     // Go to the previous site when pressing "Go Back"
-    backButton.addEventListener("click", () => {window.history.go(-1);});
+    backButton.addEventListener("click", () => {window.history.go(-2);});
 
     goButton.addEventListener("click", whitelistSiteAndGo);
 });

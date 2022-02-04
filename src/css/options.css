@@ -22,6 +22,6 @@ label {
     align-items: center;
 }
 
-label * {
+.option * {
     vertical-align: middle !important;
 }

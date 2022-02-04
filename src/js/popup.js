@@ -35,22 +35,26 @@ const enableOrDisableExtension = () => {
 const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
-    fetch("http://localhost:5000/api/fetch")
-        .then(response => response.json())
-        .then((data) => {
-            if(!(apiWarning.classList.contains('is-hidden'))) {
-                apiWarning.classList.add('is-hidden');
-            }
-            chrome.storage.local.set({'urls': data.sites});
-            // chrome.runtime.sendMessage({message: "update"});
-            updateButton.classList.remove('is-loading');
-            chrome.runtime.sendMessage({message: "update"});
-            lastUpdateElem.innerHTML = utils.elapsedTimeToString(current);
-            chrome.storage.local.set({'lastUpdate': current});                        
-        }) .catch( _ => {
-            updateButton.classList.remove('is-loading');
-            apiWarning.classList.remove('is-hidden');
-        });
+    chrome.storage.local.get('api', data => {
+        if(data.hasOwnProperty("api")) {
+            fetch(data.api)
+                .then(response => response.json())
+                .then((data) => {
+                    if(!(apiWarning.classList.contains('is-hidden'))) {
+                        apiWarning.classList.add('is-hidden');
+                    }
+                    chrome.storage.local.set({'urls': data.sites});
+                    // chrome.runtime.sendMessage({message: "update"});
+                    updateButton.classList.remove('is-loading');
+                    chrome.runtime.sendMessage({message: "update"});
+                    lastUpdateElem.innerHTML = utils.elapsedTimeToString(current);
+                    chrome.storage.local.set({'lastUpdate': current});                        
+                }) .catch( _ => {
+                    updateButton.classList.remove('is-loading');
+                    apiWarning.classList.remove('is-hidden');
+                });        
+        }
+    });
 };
 
 // When the popup UI is loaded, add listeners

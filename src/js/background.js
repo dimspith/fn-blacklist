@@ -58,6 +58,13 @@ chrome.tabs.onUpdated.addListener((tabId, change, tab) => {
     }
 });
 
+
+chrome.storage.local.get(['api'], data => {
+    if(!data.hasOwnProperty('api')) {
+        chrome.storage.local.set({'api': "http://localhost:5000/api/fetch"});
+    }
+});
+
 // Wait for messages from other pages withing the extension
 chrome.runtime.onMessage.addListener((request) => {
     // Message requesting a blacklist update

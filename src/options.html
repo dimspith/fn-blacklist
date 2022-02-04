@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="css/bulma.min.css"></link>
         <link rel="stylesheet" href="css/options.css"></link>
         <script src="js/feather.min.js"></script>
+        <script src="js/options.js"></script>
     </head>
     <body class="mx-2 my-2">
         <div class="box p-2" id="main">
@@ -31,19 +32,15 @@
             <div class="updates pt-5 px-1">
                 <div class="title is-5">Updates</div>
                 <div class="option mb-2">
-                    <label class="checkbox">
-                        <input type="checkbox" class="check mr-1">
-                        Auto-update blacklist every
-                        <input class="input checkInput" id="updateInterval" type="text" value="1">
-                        days
-                    </label>                    
+                    <input type="checkbox" class="check mr-1">
+                    Auto-update blacklist every
+                    <input class="input checkInput" id="updateInterval" type="text" value="1">
+                    days
                 </div>
-                <div class="option mb-2">
-                    <label class="checkbox">
-                        <input type="checkbox" class="check mr-1">
-                        Custom update server:
-                        <input class="input checkInput" type="text" id="urlInput" value="http://localhost:5000">
-                    </label>                    
+                <div class="option mb-2 is-align-content-center">
+                    <span class="content">API URL:</span>
+                    <input class="input checkInput custom-api" type="text" id="urlInput" value="">
+                    <button class="button is-small is-warning is-rounded"><i data-feather="check"></i></button>
                 </div>
             </div>
         </div>                
