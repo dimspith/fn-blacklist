@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const urlParams = new URLSearchParams(window.location.search);
     let blockedURL = urlParams.get('blocked-page');
-    let domain = (new URL(blockedURL)).hostname;
+    let domain = (new URL(blockedURL)).hostname.replace('www.','');
 
     const whitelistSiteAndGo = () => {
         togglePageWhitelist(false);
