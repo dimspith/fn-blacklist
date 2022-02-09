@@ -1,6 +1,8 @@
 'use strict';
 
 
+// ---------- Function Declarations ----------
+
 const isProtectedOrEmpty = (url) => {
     const protectedPrefixes = [
         "chrome://",
@@ -42,38 +44,58 @@ const blockIfFake = (url, tabID) => {
     });
 };
 
-chrome.tabs.onActivated.addListener( function(activeInfo){
+const checkOnActiveTab = (activeInfo) => {
     chrome.tabs.get(activeInfo.tabId, function(tab){
         const url = tab.url;
         console.log("(Tab activated) you are here: " + url);
         blockIfFake(url, tab.id);
-    });
-});
+    });    
+};
 
-chrome.tabs.onUpdated.addListener((tabId, change, tab) => {
+const checkOnTabUpdate = (tabID, change, tab) => {
     if (tab.active && change.url) {
         const url = change.url;
         console.log("(Tab updated) you are here: " + url);
         blockIfFake(url, tab.id);
-    }
-});
+    }    
+};
 
+const addTabListeners = () => {
+    chrome.tabs.onActivated.addListener(checkOnActiveTab);
+    chrome.tabs.onUpdated.addListener(checkOnTabUpdate);
+};
+
+const removeTabListeners = () => {
+    chrome.tabs.onActivated.removeListener(checkOnActiveTab);
+    chrome.tabs.onUpdated.removeListener(checkOnTabUpdate);
+};
 
 chrome.storage.local.get(['api'], data => {
     if(!data.hasOwnProperty('api')) {
-        // chrome.storage.local.set({'api': "http://localhost:5000/api/fetch"});
         chrome.storage.local.set({'api': "https://fnapi.dimspith.com/api/fetch"});
     }
 });
 
+// ---------- Startup Procedures ----------
+p
+// When the extension is loaded, add required listeners
+addTabListeners();
+
 // Wait for messages from other pages withing the extension
 chrome.runtime.onMessage.addListener((request) => {
-    // Message requesting a blacklist update
-    if (request.message == "update") {
+    switch(request.message) {
+    case "update":
         chrome.storage.local.get(function(data) {
             console.log(data);
         });
-    } else {
-        console.log(request.message);
+        break;
+        
+    case "toggle":
+        removeTabListeners();
+        break;
+        
+    default:
+        break;
+        
     }
 });
