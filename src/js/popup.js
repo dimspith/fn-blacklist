@@ -22,8 +22,9 @@ const apiWarning = document.getElementById("api-warning");
 // and notifying the background script
 const enableOrDisableExtension = () => {
     enabled = !enabled;
-    chrome.storage.local.set({'enabled': enabled});
     powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
+
+    chrome.runtime.sendMessage({message: "toggle", value: enabled});
     if(enabled) {
         powerButton.classList.replace('is-danger', 'is-success');
     } else {

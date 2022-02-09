@@ -91,7 +91,13 @@ chrome.runtime.onMessage.addListener((request) => {
         break;
         
     case "toggle":
-        removeTabListeners();
+        if(request.value == true) {
+            chrome.storage.local.set({'enabled': true});
+            addTabListeners();
+        } else {
+            chrome.storage.local.set({'enabled': false});
+            removeTabListeners();
+        }
         break;
         
     default:
