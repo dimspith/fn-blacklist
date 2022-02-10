@@ -3,6 +3,7 @@
 
 // ---------- Function Declarations ----------
 
+// Check if URL is empty (happens with tabs) or protected
 const isProtectedOrEmpty = (url) => {
     const protectedPrefixes = [
         "chrome://",
@@ -20,8 +21,7 @@ const isProtectedOrEmpty = (url) => {
     return false;
 };
 
-// Function ran when a site is blocked. By default it redirects to a custom page.
-// Don't block the current domain is in the whitelist
+// Block page if it's in the blacklist and not whitelisted or protected
 const blockIfFake = (url, tabID) => {
     chrome.storage.local.get(['enabled', 'whitelist', 'urls'], data => {
         if(data.enabled) {
@@ -84,12 +84,6 @@ addTabListeners();
 // Wait for messages from other pages withing the extension
 chrome.runtime.onMessage.addListener((request) => {
     switch(request.message) {
-    case "update":
-        chrome.storage.local.get(function(data) {
-            console.log(data);
-        });
-        break;
-        
     case "toggle":
         if(request.value == true) {
             chrome.storage.local.set({'enabled': true});
@@ -99,7 +93,9 @@ chrome.runtime.onMessage.addListener((request) => {
             removeTabListeners();
         }
         break;
-        
+    case "update":
+        chrome.storage.local.set({'urls': request.value});
+        chrome.storage.local.set({'lastUpdate': Date.now()});
     default:
         break;
         

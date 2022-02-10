@@ -37,71 +37,64 @@ const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
     chrome.storage.local.get('api', data => {
-        if(data.hasOwnProperty("api")) {
-            fetch(data.api)
-                .then(response => response.json())
-                .then((data) => {
-                    if(!(apiWarning.classList.contains('is-hidden'))) {
-                        apiWarning.classList.add('is-hidden');
-                    }
-                    chrome.storage.local.set({'urls': data.sites});
-                    // chrome.runtime.sendMessage({message: "update"});
-                    updateButton.classList.remove('is-loading');
-                    chrome.runtime.sendMessage({message: "update"});
-                    lastUpdateElem.innerHTML = utils.elapsedTimeToString(current);
-                    chrome.storage.local.set({'lastUpdate': current});                        
-                }) .catch( _ => {
-                    updateButton.classList.remove('is-loading');
-                    apiWarning.classList.remove('is-hidden');
-                });        
-        }
+        fetch(data.api)
+            .then(response => response.json())
+            .then((data) => {
+                if(!(apiWarning.classList.contains('is-hidden'))) {
+                    apiWarning.classList.add('is-hidden');
+                }
+                chrome.runtime.sendMessage({message: "update",
+                                            value: data.sites});
+                updateButton.classList.remove('is-loading');
+                lastUpdateElem.innerHTML = utils.elapsedTimeToString(current);
+            }) .catch( _ => {
+                updateButton.classList.remove('is-loading');
+                apiWarning.classList.remove('is-hidden');
+            });        
     });
 };
 
-// When the popup UI is loaded, add listeners
-document.addEventListener("DOMContentLoaded", function () {
+// Get extension state (ON/OFF) 
+chrome.storage.local.get('enabled', data => {
+    enabled = !!data.enabled;
+    powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
+    if(enabled) {
+        powerButton.classList.replace('is-danger', 'is-success');
+    } else {
+        powerButton.classList.replace('is-success', 'is-danger');
+    }
+});
 
-    // Get extension state (ON/OFF) 
-    chrome.storage.local.get('enabled', data => {
-        enabled = !!data.enabled;
-        powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
-        if(enabled) {
-            powerButton.classList.replace('is-danger', 'is-success');
-        } else {
-            powerButton.classList.replace('is-success', 'is-danger');
+// Show elapsed time since last update
+chrome.storage.local.get('lastUpdate', data => {
+    let lastUpdate = data.lastUpdate;
+    if (typeof lastUpdate !== 'undefined') {
+        lastUpdateElem.innerHTML = utils.elapsedTimeToString(lastUpdate);
+    } else {
+        lastUpdateElem.innerHTML = "never";
+    }
+});
+
+// Display whitelist button based on current page's status
+chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+    let status = utils.siteInWhitelist(tab[0].url);
+    status.then((status) => {
+        if(status === true) {
+            whitelistButton.classList.replace('is-info', 'is-danger');
+            whitelistButton.innerHTML = utils.whitelistedHTML;
+            feather.replace();
         }
     });
+});
 
-    // Show elapsed time since last update
-    chrome.storage.local.get('lastUpdate', data => {
-        let lastUpdate = data.lastUpdate;
-        if (typeof lastUpdate !== 'undefined') {
-            lastUpdateElem.innerHTML = utils.elapsedTimeToString(lastUpdate);
-        } else {
-            lastUpdateElem.innerHTML = "never";
-        }
-    });
-
-    // Display whitelist button based on current page's status
-    chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-        let status = utils.siteInWhitelist(tab[0].url);
-        status.then((status) => {
-            if(status === true) {
-                whitelistButton.classList.replace('is-info', 'is-danger');
-                whitelistButton.innerHTML = utils.whitelistedHTML;
-                feather.replace();
-            }
-        });
-    });
-
-    powerButton.addEventListener("click", enableOrDisableExtension);
-    updateButton.addEventListener("click", updateBlacklist);
-    whitelistButton.addEventListener("click", () => {utils.togglePageWhitelist(true);});
-    settingsButton.addEventListener('click', function() {
-        if (chrome.runtime.openOptionsPage) {
-            chrome.runtime.openOptionsPage();
-        } else {
-            window.open(chrome.runtime.getURL('options.html'));
-        }
-    });
+// Add button listeners
+powerButton.addEventListener("click", enableOrDisableExtension);
+updateButton.addEventListener("click", updateBlacklist);
+whitelistButton.addEventListener("click", () => {utils.togglePageWhitelist(true);});
+settingsButton.addEventListener('click', function() {
+    if (chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+    } else {
+        window.open(chrome.runtime.getURL('src/options.html'));
+    }
 });

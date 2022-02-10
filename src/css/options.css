@@ -1,5 +1,11 @@
-html {
+html, body {
     background-color: #eeeeee;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	justify-content: stretch;
+	overflow: hidden;
+	position: relative;
 }
 
 .check {
@@ -24,4 +30,11 @@ label {
 
 .option * {
     vertical-align: middle !important;
+}
+
+
+iframe {
+	background-color: transparent;
+	border: 0;
+	width: 100%;
 }

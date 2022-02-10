@@ -6,44 +6,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/bulma.min.css"></link>
         <link rel="stylesheet" href="css/options.css"></link>
-        <script src="js/feather.min.js"></script>
-        <script src="js/options.js"></script>
+
     </head>
-    <body class="mx-2 my-2">
-        <div class="box p-2" id="main">
-            <nav class="navbar" role="navigation" aria-label="main navigation">
-                <div class="navbar-brand">
-                    <a class="navbar-item p-1" href="#">
-                        <img src="icons/fakenews128.png">
-                    </a>
-                </div>
-                <div class="navbar-menu">
-                    <div class="navbar-start">
-                        <div class="tabs navbar-item">
-                            <ul>
-                                <li class="is-active"><a>Settings</a></li>
-                                <li><a>Statistics</a></li>
-                                <li><a>About</a></li>
-                            </ul>
-                        </div>
+    <body class="my-2">
+        <nav class="navbar mx-1 mb-1" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item p-1" href="#">
+                    <img src="icons/fakenews128.png">
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="tabs navbar-item">
+                        <ul>
+                            <li class="is-active"><a href="#settings">Settings</a></li>
+                            <li><a href="#statistics">Statistics</a></li>
+                            <li><a href="#about">About</a></li>
+                        </ul>
                     </div>
                 </div>
-            </nav>
-            <div class="updates pt-5 px-1">
-                <div class="title is-5">Updates</div>
-                <div class="option mb-2">
-                    <input type="checkbox" class="check mr-1">
-                    Auto-update blacklist every
-                    <input class="input checkInput" id="updateInterval" type="text" value="1">
-                    days
-                </div>
-                <div class="option mb-2 is-align-content-center">
-                    <span class="content">API URL:</span>
-                    <input class="input checkInput custom-api" type="text" id="urlInput" value="">
-                    <button class="button is-small is-warning is-rounded"><i data-feather="check"></i></button>
-                </div>
             </div>
-        </div>                
+        </nav>
+        <iframe class="m-0 p-0 is-flex-grow-1" id="contents" frameborder="0" src="#settings"></iframe>
+        <script src="js/feather.min.js"></script>
+        <script src="js/umbrella.min.js"></script>
+        <script src="js/options.js"></script>
         <script src="js/feather-replace.js"></script>
     </body>
 </html>
