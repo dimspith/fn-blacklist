@@ -1,5 +1,5 @@
 # Fake News Blacklist
-
+    
 ### About
 **A browser extension that blocks fake news sites according to a content-agnostic ML classifier**
 
@@ -11,5 +11,7 @@ It leverages a blacklist provided by an external host that performs the analysis
 The backend API can be found [here](https://github.com/dimspith/fnapi).
 
 ### Tooling used
-- [Bulma CSS](https://bulma.io/) for styling
-- [feathericons](https://github.com/feathericons/feather) javascript library for loading svg icons.
+- [Bulma CSS](https://bulma.io/): Styling.
+- [Feather Icons](https://github.com/feathericons/feather): JS library for loading svg icons.
+- [Umbrella JS](https://umbrellajs.com/): Tiny DOM Manipulation library, similar to JQuery.
+ 
