@@ -1,3 +1,4 @@
+'use strict';
 
 // Set the correct iframe page and active navbar item
 const navigateToPage = () => {

@@ -1,6 +1,5 @@
 'use strict';
 
-
 // ---------- Function Declarations ----------
 
 // Check if URL is empty (happens with tabs) or protected
@@ -44,27 +43,29 @@ const blockIfFake = (url, tabID) => {
     });
 };
 
+// Check if active tab is in the blacklist
 const checkOnActiveTab = (activeInfo) => {
     chrome.tabs.get(activeInfo.tabId, function(tab){
         const url = tab.url;
-        console.log("(Tab activated) you are here: " + url);
         blockIfFake(url, tab.id);
     });    
 };
 
+// Check if updated tab tab is in the blacklist
 const checkOnTabUpdate = (tabID, change, tab) => {
     if (tab.active && change.url) {
         const url = change.url;
-        console.log("(Tab updated) you are here: " + url);
         blockIfFake(url, tab.id);
     }    
 };
 
+// Add listeners on activated and updated tabs
 const addTabListeners = () => {
     chrome.tabs.onActivated.addListener(checkOnActiveTab);
     chrome.tabs.onUpdated.addListener(checkOnTabUpdate);
 };
 
+// Remove all tab listeners
 const removeTabListeners = () => {
     chrome.tabs.onActivated.removeListener(checkOnActiveTab);
     chrome.tabs.onUpdated.removeListener(checkOnTabUpdate);

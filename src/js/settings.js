@@ -1,3 +1,4 @@
+'use strict';
 
 const getAPIURL = () => {
     chrome.storage.local.get(['api'], data => {
