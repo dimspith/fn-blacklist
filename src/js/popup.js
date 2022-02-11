@@ -50,7 +50,7 @@ const updateBlacklist = () => {
             }) .catch( _ => {
                 updateButton.classList.remove('is-loading');
                 apiWarning.classList.remove('is-hidden');
-            });        
+            });
     });
 };
 

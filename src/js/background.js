@@ -70,16 +70,17 @@ const removeTabListeners = () => {
     chrome.tabs.onUpdated.removeListener(checkOnTabUpdate);
 };
 
+// ---------- Startup Procedures ----------
+
+// When the extension is loaded, add required listeners
+addTabListeners();
+
+// Set the API's default URL
 chrome.storage.local.get(['api'], data => {
     if(!data.hasOwnProperty('api')) {
         chrome.storage.local.set({'api': "https://fnapi.dimspith.com/api/fetch"});
     }
 });
-
-// ---------- Startup Procedures ----------
-
-// When the extension is loaded, add required listeners
-addTabListeners();
 
 // Wait for messages from other pages withing the extension
 chrome.runtime.onMessage.addListener((request) => {
@@ -96,6 +97,9 @@ chrome.runtime.onMessage.addListener((request) => {
     case "update":
         chrome.storage.local.set({'urls': request.value});
         chrome.storage.local.set({'lastUpdate': Date.now()});
+        break;
+    case "set-api":
+        chrome.storage.local.set({'api': request.value});
     default:
         break;
         
