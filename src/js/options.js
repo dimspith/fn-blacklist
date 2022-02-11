@@ -42,4 +42,3 @@ const addNavListeners = () => {
 
 addNavListeners();
 navigateToPage();
-getAPIURL();
