@@ -2,6 +2,29 @@
 
 // ---------- Function Declarations ----------
 
+// Binary search algorithm
+function binarySearch(items, value){
+    var startIndex  = 0,
+        stopIndex   = items.length - 1,
+        middle      = Math.floor((stopIndex + startIndex)/2);
+
+    while(items[middle] != value && startIndex < stopIndex){
+
+        //adjust search area
+        if (value < items[middle]){
+            stopIndex = middle - 1;
+        } else if (value > items[middle]){
+            startIndex = middle + 1;
+        }
+
+        //recalculate middle
+        middle = Math.floor((stopIndex + startIndex)/2);
+    }
+
+    //make sure it's the right value
+    return (items[middle] != value) ? false : true;
+}
+
 // Check if URL is empty (happens with tabs) or protected
 const isProtectedOrEmpty = (url) => {
     const protectedPrefixes = [
@@ -25,13 +48,12 @@ const blockIfFake = (url, tabID) => {
     chrome.storage.local.get(['enabled', 'whitelist', 'urls'], data => {
         if(data.enabled) {
             if(isProtectedOrEmpty(url)) {
-                console.log("URL is protected!");
                 return;
             }
             const domain = (new URL(url)).hostname.replace('www.','');
             if (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain)) {
                 console.log(domain + " in whitelist!");
-            } else if (data.urls.includes(domain)) {
+            } else if (binarySearch(data.urls, domain)) {
                 console.log(domain + " not whitelisted!");
                 let blocked = chrome.runtime.getURL("src/blocked.html")
                     .concat(`?blocked-page=${url}`);
@@ -41,13 +63,16 @@ const blockIfFake = (url, tabID) => {
             console.log("Extension not enabled!");
         }
     });
+
 };
 
 // Check if active tab is in the blacklist
 const checkOnActiveTab = (activeInfo) => {
     chrome.tabs.get(activeInfo.tabId, function(tab){
         const url = tab.url;
+        console.time("Blocking");
         blockIfFake(url, tab.id);
+        console.timeEnd("Blocking");
     });    
 };
 
@@ -55,7 +80,9 @@ const checkOnActiveTab = (activeInfo) => {
 const checkOnTabUpdate = (tabID, change, tab) => {
     if (tab.active && change.url) {
         const url = change.url;
+        console.time("Blocking");
         blockIfFake(url, tab.id);
+        console.timeEnd("Blocking");
     }    
 };
 
