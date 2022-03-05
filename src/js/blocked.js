@@ -12,7 +12,7 @@ let domain = (new URL(blockedURL)).hostname.replace('www.','');
 
 const whitelistSiteAndGo = () => {
     togglePageWhitelist(false);
-    window.location.href = blockedURL;
+    window.location.replace(blockedURL);
 };
 
 // Add blocked url to page

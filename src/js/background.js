@@ -46,21 +46,17 @@ const isProtectedOrEmpty = (url) => {
 // Block page if it's in the blacklist and not whitelisted or protected
 const blockIfFake = (url, tabID) => {
     chrome.storage.local.get(['enabled', 'whitelist', 'urls'], data => {
-        if(data.enabled) {
-            if(isProtectedOrEmpty(url)) {
-                return;
-            }
-            const domain = (new URL(url)).hostname.replace('www.','');
-            if (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain)) {
-                console.log(domain + " in whitelist!");
-            } else if (binarySearch(data.urls, domain)) {
-                console.log(domain + " not whitelisted!");
-                let blocked = chrome.runtime.getURL("src/blocked.html")
-                    .concat(`?blocked-page=${url}`);
-                chrome.tabs.update(tabID, {url: blocked});
-            }
-        } else {
-            console.log("Extension not enabled!");
+        if(isProtectedOrEmpty(url)) {
+            return;
+        }
+        const domain = (new URL(url)).hostname.replace('www.','');
+        if (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain)) {
+            console.log(domain + " in whitelist!");
+        } else if (binarySearch(data.urls, domain)) {
+            console.log(domain + " not whitelisted!");
+            let blocked = chrome.runtime.getURL("src/blocked.html")
+                .concat(`?blocked-page=${url}`);
+            chrome.tabs.update(tabID, {url: blocked});
         }
     });
 

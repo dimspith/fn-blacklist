@@ -18,8 +18,7 @@ const updateButton = document.getElementById("updateButton");
 const lastUpdateElem = document.getElementById("lastUpdate");
 const apiWarning = document.getElementById("api-warning");
 
-// Enables or disables the extension by changing a localstorage variable
-// and notifying the background script
+// Enables or disables the extension by notifying the background service worker
 const enableOrDisableExtension = () => {
     enabled = !enabled;
     powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
