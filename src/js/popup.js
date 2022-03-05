@@ -36,7 +36,7 @@ const updateBlacklist = () => {
     let current = Date.now();
     updateButton.classList.add('is-loading');
     chrome.storage.local.get('api', data => {
-        fetch(data.api)
+        fetch(data.api + "/api/fetch")
             .then(response => response.json())
             .then((data) => {
                 if(!(apiWarning.classList.contains('is-hidden'))) {
