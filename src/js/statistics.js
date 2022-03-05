@@ -1,6 +1,8 @@
 'use strict';
 
 const whitelist = u(".whitelist-list");
+const whitelistSize = u(".whitelist-size");
+const blacklistSize = u(".blacklist-size");
 
 const getWhitelistHTML = (site) => {
     return `
@@ -10,8 +12,10 @@ const getWhitelistHTML = (site) => {
 </span>`;
 };
 
-chrome.storage.local.get(['whitelist'], data => {
+chrome.storage.local.get(['whitelist', 'urls'], data => {
     if(data.hasOwnProperty('whitelist')) {
+
+        // Add whitelisted sites in the UI with buttons to delete each one
         data.whitelist.forEach((site) => {
             u(whitelist).append(getWhitelistHTML(site));
         });
@@ -28,6 +32,11 @@ chrome.storage.local.get(['whitelist'], data => {
             });
             parent.remove();
         });
+
+        // Add whitelist and blacklist counts
+        u(whitelistSize).text(data.whitelist.length);
+        u(blacklistSize).text(data.urls.length);
+        
     }
 });
 
