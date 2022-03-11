@@ -55,7 +55,7 @@ const getQueryStringParams = (params, url) => {
 
 const getCurrentDomain = (url) => {
     let domain = new URL(url).hostname.replace('www.', '');
-    if (url.startsWith("chrome-extension://" + window.document.domain)) {
+    if (url.startsWith(chrome.runtime.getURL(""))) {
         return new URL(getQueryStringParams('blocked-page', url)).hostname.replace('www.', '');
     } else {
         return domain;

@@ -3,22 +3,22 @@
 // ---------- Function Declarations ----------
 
 // Binary search algorithm
-function binarySearch(items, value){
-    var startIndex  = 0,
-        stopIndex   = items.length - 1,
-        middle      = Math.floor((stopIndex + startIndex)/2);
+function binarySearch(items, value) {
+    var startIndex = 0,
+        stopIndex = items.length - 1,
+        middle = Math.floor((stopIndex + startIndex) / 2);
 
-    while(items[middle] != value && startIndex < stopIndex){
+    while (items[middle] != value && startIndex < stopIndex) {
 
         //adjust search area
-        if (value < items[middle]){
+        if (value < items[middle]) {
             stopIndex = middle - 1;
-        } else if (value > items[middle]){
+        } else if (value > items[middle]) {
             startIndex = middle + 1;
         }
 
         //recalculate middle
-        middle = Math.floor((stopIndex + startIndex)/2);
+        middle = Math.floor((stopIndex + startIndex) / 2);
     }
 
     //make sure it's the right value
@@ -35,8 +35,8 @@ const isProtectedOrEmpty = (url) => {
     if (!url || url.length === 0) {
         return true;
     }
-    for(var i = 0; i < protectedPrefixes.length; i++) {
-        if(url.startsWith(protectedPrefixes[i])) {
+    for (var i = 0; i < protectedPrefixes.length; i++) {
+        if (url.startsWith(protectedPrefixes[i])) {
             return true;
         }
     }
@@ -46,17 +46,17 @@ const isProtectedOrEmpty = (url) => {
 // Block page if it's in the blacklist and not whitelisted or protected
 const blockIfFake = (url, tabID) => {
     chrome.storage.local.get(['enabled', 'whitelist', 'urls'], data => {
-        if(isProtectedOrEmpty(url)) {
+        if (isProtectedOrEmpty(url)) {
             return;
         }
-        const domain = (new URL(url)).hostname.replace('www.','');
+        const domain = (new URL(url)).hostname.replace('www.', '');
         if (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain)) {
             console.log(domain + " in whitelist!");
         } else if (binarySearch(data.urls, domain)) {
             console.log(domain + " not whitelisted!");
             let blocked = chrome.runtime.getURL("src/blocked.html")
                 .concat(`?blocked-page=${url}`);
-            chrome.tabs.update(tabID, {url: blocked});
+            chrome.tabs.update(tabID, { url: blocked });
         }
     });
 
@@ -64,12 +64,12 @@ const blockIfFake = (url, tabID) => {
 
 // Check if active tab is in the blacklist
 const checkOnActiveTab = (activeInfo) => {
-    chrome.tabs.get(activeInfo.tabId, function(tab){
+    chrome.tabs.get(activeInfo.tabId, function(tab) {
         const url = tab.url;
         console.time("Blocking");
         blockIfFake(url, tab.id);
         console.timeEnd("Blocking");
-    });    
+    });
 };
 
 // Check if updated tab tab is in the blacklist
@@ -79,7 +79,7 @@ const checkOnTabUpdate = (tabID, change, tab) => {
         console.time("Blocking");
         blockIfFake(url, tab.id);
         console.timeEnd("Blocking");
-    }    
+    }
 };
 
 // Add listeners on activated and updated tabs
@@ -101,31 +101,58 @@ addTabListeners();
 
 // Set the API's default URL
 chrome.storage.local.get(['api'], data => {
-    if(!data.hasOwnProperty('api')) {
-        chrome.storage.local.set({'api': "https://fnapi.dimspith.com/api/fetch"});
+    if (!data.hasOwnProperty('api')) {
+        chrome.storage.local.set({ 'api': "https://fnapi.dimspith.com/api/fetch" });
+    }
+});
+
+// Set the last API Update to 0
+chrome.storage.local.get(['lastAPIUpdate'], data => {
+    if (!data.hasOwnProperty('lastAPIUpdate')) {
+        chrome.storage.local.set({ 'lastAPIUpdate': 0 });
     }
 });
 
 // Wait for messages from other pages withing the extension
 chrome.runtime.onMessage.addListener((request) => {
-    switch(request.message) {
-    case "toggle":
-        if(request.value == true) {
-            chrome.storage.local.set({'enabled': true});
-            addTabListeners();
-        } else {
-            chrome.storage.local.set({'enabled': false});
-            removeTabListeners();
-        }
-        break;
-    case "update":
-        chrome.storage.local.set({'urls': request.value});
-        chrome.storage.local.set({'lastUpdate': Date.now()});
-        break;
-    case "set-api":
-        chrome.storage.local.set({'api': request.value});
-    default:
-        break;
-        
+    switch (request.message) {
+        case "toggle":
+            if (request.value == true) {
+                chrome.storage.local.set({ 'enabled': true });
+                addTabListeners();
+            } else {
+                chrome.storage.local.set({ 'enabled': false });
+                removeTabListeners();
+            }
+            break;
+        case "update":
+            chrome.storage.local.set({ 'urls': request.value });
+            chrome.storage.local.set({ 'lastUpdate': Date.now() });
+            break;
+        case "update-diff":
+            const insertions = request.value.insertions;
+            const deletions = request.value.deletions;
+            const lastAPIUpdate = request.value.lastupdate;
+
+            chrome.storage.local.get(['urls'], data => {
+                // Apply diffs to urls
+                chrome.storage.local.set({
+                    'urls': data.urls
+                        .concat(insertions)
+                        .filter(function(item) {
+                            return deletions.indexOf(item) === -1;
+                        })
+                        .sort()
+                });
+            });
+            // Set last extension and API update time
+            chrome.storage.local.set({ 'lastUpdate': Date.now() });
+            chrome.storage.local.set({ 'lastAPIUpdate': lastAPIUpdate });
+            break;
+        case "set-api":
+            chrome.storage.local.set({ 'api': request.value });
+        default:
+            break;
+
     }
 });
