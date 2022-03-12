@@ -196,7 +196,7 @@ settingsButton.addEventListener('click', function() {
 });
 
 // Add listener to receive messages from background page
-chrome.extension.onRequest.addListener(function(request) {
+chrome.runtime.onMessage.addListener(function(request) {
     switch (request.result) {
         case 'success':
             updateButton.classList.remove('is-loading');

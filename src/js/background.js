@@ -48,6 +48,8 @@ const blockIfFake = (url, tabID) => {
     chrome.storage.local.get(['enabled', 'whitelist', 'urls'], data => {
         if (isProtectedOrEmpty(url)) {
             return;
+        } else if(data.whitelist.length === 0) {
+            return;
         }
         const domain = (new URL(url)).hostname.replace('www.', '');
         if (data.hasOwnProperty('whitelist') && data.whitelist.includes(domain)) {
@@ -95,9 +97,6 @@ const removeTabListeners = () => {
 };
 
 // ---------- Startup Procedures ----------
-
-// When the extension is loaded, add required listeners
-addTabListeners();
 
 // Set the API's default URL
 chrome.storage.local.get(['api'], data => {
