@@ -102,7 +102,7 @@ addTabListeners();
 // Set the API's default URL
 chrome.storage.local.get(['api'], data => {
     if (!data.hasOwnProperty('api')) {
-        chrome.storage.local.set({ 'api': "https://fnapi.dimspith.com/api/fetch" });
+        chrome.storage.local.set({ 'api': "http://localhost:4000" });
     }
 });
 
@@ -113,9 +113,26 @@ chrome.storage.local.get(['lastAPIUpdate'], data => {
     }
 });
 
+// Set the last Client Update to 0
+chrome.storage.local.get(['lastUpdate'], data => {
+    if (!data.hasOwnProperty('lastUpdate')) {
+        chrome.storage.local.set({ 'lastUpdate': 0 });
+    }
+});
+
+// Set the whitelist to an empty array
+chrome.storage.local.get(['whitelist'], data => {
+    if (!data.hasOwnProperty('whitelist')) {
+        chrome.storage.local.set({ 'whitelist': [] });
+    }
+});
+
 // Wait for messages from other pages withing the extension
-chrome.runtime.onMessage.addListener((request) => {
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     switch (request.message) {
+        case "debug":
+            console.log(request.value);
+            break;
         case "toggle":
             if (request.value == true) {
                 chrome.storage.local.set({ 'enabled': true });
@@ -125,29 +142,40 @@ chrome.runtime.onMessage.addListener((request) => {
                 removeTabListeners();
             }
             break;
+        case "toggle-whitelist":
+            chrome.storage.local.get(['whitelist'], (data) => {
+                var whitelist = data.whitelist;
+                if (whitelist.includes(request.domain)) {
+                    whitelist.splice(whitelist.indexOf(request.domain), 1);
+                    chrome.storage.local.set({ 'whitelist': whitelist });
+                } else {
+                    whitelist.push(request.domain);
+                    chrome.storage.local.set({ 'whitelist': whitelist });
+                }
+            });
+            break;
         case "update":
-            chrome.storage.local.set({ 'urls': request.value });
-            chrome.storage.local.set({ 'lastUpdate': Date.now() });
+            chrome.storage.local.set({
+                'urls': request.data.sites,
+                'lastUpdate': Date.now(),
+                'lastAPIUpdate': request.data.lastupdate
+            });
+            sendResponse({ success: true });
             break;
         case "update-diff":
-            const insertions = request.value.insertions;
-            const deletions = request.value.deletions;
-            const lastAPIUpdate = request.value.lastupdate;
-
             chrome.storage.local.get(['urls'], data => {
                 // Apply diffs to urls
                 chrome.storage.local.set({
                     'urls': data.urls
-                        .concat(insertions)
+                        .concat(request.insertions)
                         .filter(function(item) {
-                            return deletions.indexOf(item) === -1;
-                        })
-                        .sort()
+                            return request.deletions.indexOf(item) === -1;
+                        }).sort(),
+                    'lastUpdate': Date.now(),
+                    'lastAPIUpdate': request.lastAPIUpdate
                 });
             });
-            // Set last extension and API update time
-            chrome.storage.local.set({ 'lastUpdate': Date.now() });
-            chrome.storage.local.set({ 'lastAPIUpdate': lastAPIUpdate });
+            sendResponse({ success: true });
             break;
         case "set-api":
             chrome.storage.local.set({ 'api': request.value });

@@ -43,14 +43,34 @@
                 </div>
             </div>
             <div class="has-background-white-ter mt-2 blacklist columns is-mobile is-align-items-center is-justify-content-space-between">
-                <p class="column">Last update:</p>
+                <p class="column">Last update attempt:</p>
                 <strong class="column" id="lastUpdate"></strong>
                 <button class="column button is-warning is-fullwidth is-light" id="updateButton">Update</button>
             </div>
+            <div id="modal" class="modal">
+                <div class="modal-background">
+                </div>
+                <div class="modal-content">
+                    <div id="api-warning" class="notification is-light is-danger mx-5 is-hidden">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i data-feather="alert-triangle"></i>
+                            </span>
+                            <span>Couldn't connect, please try again later.</span>
+                        </span>
+                    </div>
+                    <div id="update-warning" class="notification is-light is-success mx-5 is-hidden">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i data-feather="check-circle"></i>
+                            </span>
+                            <span>No new updates</span>
+                        </span>
+                    </div>
+                </div>
+                <button class="modal-close is-large" aria-label="close"></button>
+            </div>
         </div>
-        <button id="api-warning" class="button is-static is-danger is-light is-fullwidth mt-3 is-hidden">
-            Error: API not reachable
-        </button>
         <script src="js/umbrella.min.js"></script>
         <script src="js/feather.min.js"></script>
         <script src="js/utils.js" type="module"></script>

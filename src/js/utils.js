@@ -83,29 +83,22 @@ const togglePageWhitelist = (isPopup) => {
     chrome.storage.local.get(['whitelist'], (data) => {
         chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             const blockedURL = getCurrentDomain(tab[0].url);
-            var urls = data.whitelist;
-            chrome.runtime.sendMessage({message: "update"});
-            chrome.runtime.sendMessage({message: urls});
-            if (typeof(urls) == 'undefined') {
+            var whitelist = data.whitelist;
+
+            if (!whitelist.includes(blockedURL)) {
                 if(isPopup) {
                     whitelistButton.classList.replace('is-info', 'is-danger');
                     whitelistButton.innerHTML = whitelistedHTML;                    
                 }
-                chrome.storage.local.set({ 'whitelist': [blockedURL] });
-            } else if (!urls.includes(blockedURL)) {
-                if(isPopup) {
-                    whitelistButton.classList.replace('is-info', 'is-danger');
-                    whitelistButton.innerHTML = whitelistedHTML;                    
-                }
-                urls.push(blockedURL);
-                chrome.storage.local.set({ 'whitelist': urls });
+                whitelist.push(blockedURL);
+                chrome.storage.local.set({ 'whitelist': whitelist });
             } else {
                 if(isPopup) {
                     whitelistButton.classList.replace('is-danger', 'is-info');
                     whitelistButton.innerHTML = notWhitelistedHTML;                    
                 }
-                urls.splice(urls.indexOf(blockedURL), 1);
-                chrome.storage.local.set({ 'whitelist': urls });
+                whitelist.splice(whitelist.indexOf(blockedURL), 1);
+                chrome.storage.local.set({ 'whitelist': whitelist });
             }
             feather.replace();
         });

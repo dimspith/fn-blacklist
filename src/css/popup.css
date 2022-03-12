@@ -1,7 +1,5 @@
 body {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* overflow: hidden; */
+    /* overflow: show; */
     /* white-space: nowrap; */
     /* width: fit-content; */
     /* width: -moz-fit-content; */
@@ -12,3 +10,6 @@ body {
     text-align: center;
 }
 
+.modal-content {
+    max-height: calc(100vh - 30px) !important;
+}
