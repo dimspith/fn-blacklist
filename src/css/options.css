@@ -4,7 +4,6 @@ html, body {
 	flex-direction: column;
 	height: 100vh;
 	justify-content: stretch;
-	overflow: hidden;
 	position: relative;
 }
 
@@ -37,4 +36,10 @@ iframe {
 	background-color: transparent;
 	border: 0;
 	width: 100%;
+    overflow: auto !important;
+}
+
+#main .box {
+    width: 600px;
+    max-width: 800px;
 }

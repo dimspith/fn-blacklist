@@ -73,7 +73,6 @@ const updateWithDiffs = (url) => {
                 }
             });
         }).catch(_ => {
-            chrome.runtime.sendMessage({ message: "debug", value: "diffs error" });
             showWarning("api");
         });
 };
@@ -92,7 +91,6 @@ const updateWithoutDiffs = (url) => {
                 }
             });
         }).catch(err => {
-            chrome.runtime.sendMessage({ message: "debug", value: err.toString() });
             showWarning("api");
         });
 };
@@ -115,7 +113,7 @@ const updateBlacklist = () => {
             .then(res => res.json())
             .then(json => json.lastupdate)
             .then((lastAPIUpdate) => {
-
+                
                 // If we have the most recent list version, don't update.
                 if (lastAPIUpdate <= data.lastAPIUpdate) {
                     showWarning("update");
@@ -132,7 +130,6 @@ const updateBlacklist = () => {
                 }
             })
             .catch((_) => {
-                chrome.runtime.sendMessage({ message: "debug", value: "update error" });
                 showWarning("api");
             });
 

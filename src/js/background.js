@@ -32,7 +32,7 @@ const isProtectedOrEmpty = (url) => {
         "brave://",
         "chrome-extension://"
     ];
-    if (!url || url.length === 0) {
+    if (url.length === 0) {
         return true;
     }
     for (var i = 0; i < protectedPrefixes.length; i++) {
@@ -47,8 +47,10 @@ const isProtectedOrEmpty = (url) => {
 const blockIfFake = (url, tabID) => {
     chrome.storage.local.get(['enabled', 'whitelist', 'urls'], data => {
         if (isProtectedOrEmpty(url)) {
+            console.log("Protected!");
             return;
-        } else if(data.whitelist.length === 0) {
+        } else if (!data.hasOwnProperty("urls") || data.urls.length === 0) {
+            console.log("No urls in blacklist!");
             return;
         }
         const domain = (new URL(url)).hostname.replace('www.', '');
@@ -99,6 +101,13 @@ const removeTabListeners = () => {
 // ---------- Startup Procedures ----------
 
 // Set the API's default URL
+chrome.storage.local.get(['enabled'], data => {
+    if (!data.hasOwnProperty('enabled')) {
+        chrome.storage.local.set({ 'enabled': false});
+    }
+});
+
+// Set the API's default URL
 chrome.storage.local.get(['api'], data => {
     if (!data.hasOwnProperty('api')) {
         chrome.storage.local.set({ 'api': "http://localhost:4000" });
@@ -126,12 +135,24 @@ chrome.storage.local.get(['whitelist'], data => {
     }
 });
 
+// Set the whitelist to an empty array
+chrome.storage.local.get(['token'], data => {
+    if (!data.hasOwnProperty('token')) {
+        chrome.storage.local.set({ 'token': "" });
+    }
+});
+
+
 // Wait for messages from other pages withing the extension
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     switch (request.message) {
+
+        // Print debug messages to console
         case "debug":
             console.log(request.value);
             break;
+
+        // Toggle extension status (enabled/disabled)
         case "toggle":
             if (request.value == true) {
                 chrome.storage.local.set({ 'enabled': true });
@@ -141,6 +162,8 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
                 removeTabListeners();
             }
             break;
+
+        // Toggle whitelist status of a domain
         case "toggle-whitelist":
             chrome.storage.local.get(['whitelist'], (data) => {
                 var whitelist = data.whitelist;
@@ -153,7 +176,9 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
                 }
             });
             break;
-        case "update":
+
+        // Update the blacklist by downloading the latest version
+    case "update":
             chrome.storage.local.set({
                 'urls': request.data.sites,
                 'lastUpdate': Date.now(),
@@ -161,6 +186,8 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             });
             sendResponse({ success: true });
             break;
+
+        // Update the blacklist by downloading diffs since the latest version
         case "update-diff":
             chrome.storage.local.get(['urls'], data => {
                 // Apply diffs to urls
@@ -176,8 +203,16 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             });
             sendResponse({ success: true });
             break;
+
+        // Set the API URL
         case "set-api":
             chrome.storage.local.set({ 'api': request.value });
+            break;
+
+        // Set the labelling token
+        case "set-token":
+            chrome.storage.local.set({ 'token': request.value });
+            break;
         default:
             break;
 
