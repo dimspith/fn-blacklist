@@ -2,22 +2,31 @@
 
 const customAPI = u('.updates_custom-api');
 const customAPISubmit = u('.updates_custom-api-submit');
-const token = u('.advanced_token');
-const tokenSubmit = u('.advanced_token-submit');
+const token = u('.labelling_token');
+const tokenSubmit = u('.labelling_token-submit');
+const contributor = u('.labelling_contributor');
+const tokenForm = u('.labelling_token-form');
 
-
-const getAPIURL = () => {
+// Get relevant settings from localstorage
+const getSettings = () => {
     chrome.storage.local.get(['api'], data => {
         u(customAPI).attr('value', data.api);
     });
-};
-
-const getToken = () => {
+    
     chrome.storage.local.get(['token'], data => {
         u(token).attr('value', data.token);
     });
+
+    chrome.storage.local.get(['contributor'], data => {
+        if(data.contributor) {
+            u(tokenForm).removeClass('is-hidden');
+            document.querySelector('.labelling_contributor').checked=true;
+        }
+    });
+
 };
 
+// Add listeners to elements
 const addListeners = () => {
     u(customAPISubmit).on('click', () => {
         chrome.runtime.sendMessage({
@@ -32,6 +41,18 @@ const addListeners = () => {
             value: u(token).first().value
         });
     });
+
+    u(contributor).on('click', () => {
+        if(u(contributor).is(':checked')) {
+            u(tokenForm).removeClass('is-hidden');
+            chrome.runtime.sendMessage({message: "set-contributor",
+                                        value: true});
+        } else {
+            u(tokenForm).addClass('is-hidden');
+            chrome.runtime.sendMessage({message: "set-contributor",
+                                        value: false});
+        }
+    });
 };
 
 // Prevent all forms from redirecting
@@ -40,5 +61,4 @@ u('form').on('submit', (event) => {
 });
 
 addListeners();
-getAPIURL();
-getToken();
+getSettings();

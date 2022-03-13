@@ -103,7 +103,7 @@ const removeTabListeners = () => {
 // Set the API's default URL
 chrome.storage.local.get(['enabled'], data => {
     if (!data.hasOwnProperty('enabled')) {
-        chrome.storage.local.set({ 'enabled': false});
+        chrome.storage.local.set({ 'enabled': false });
     }
 });
 
@@ -139,6 +139,12 @@ chrome.storage.local.get(['whitelist'], data => {
 chrome.storage.local.get(['token'], data => {
     if (!data.hasOwnProperty('token')) {
         chrome.storage.local.set({ 'token': "" });
+    }
+});
+
+chrome.storage.local.get(['contributor'], data => {
+    if (!data.hasOwnProperty('contributor')) {
+        chrome.storage.local.set({ 'contributor': false });
     }
 });
 
@@ -178,7 +184,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             break;
 
         // Update the blacklist by downloading the latest version
-    case "update":
+        case "update":
             chrome.storage.local.set({
                 'urls': request.data.sites,
                 'lastUpdate': Date.now(),
@@ -202,6 +208,11 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
                 });
             });
             sendResponse({ success: true });
+            break;
+
+        // Set the contributor status of the user (for labelling)
+        case "set-contributor":
+            chrome.storage.local.set({ 'contributor': request.value });
             break;
 
         // Set the API URL
