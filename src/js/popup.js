@@ -19,6 +19,9 @@ const lastUpdateElem = document.getElementById("lastUpdate");
 const modal = document.getElementById("modal");
 const apiWarning = document.getElementById("api-warning");
 const updateWarning = document.getElementById("update-warning");
+const labellingForm = u('.labelling_form');
+const labellingDomain = u('.labelling_domain');
+const labellingSubmit = u('.labelling_submit');
 
 // Enables or disables the extension by notifying the background service worker
 const enableOrDisableExtension = () => {
@@ -149,6 +152,17 @@ chrome.storage.local.get('enabled', data => {
     }
 });
 
+// If authorized, enable labelling
+chrome.storage.local.get(['contributor'], data => {
+    if(data.contributor == true) {
+        u(labellingForm).removeClass('is-hidden');
+        chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
+            u(labellingDomain).attr('value', utils.getCurrentDomain(tab[0].url));
+        });
+
+    }
+});
+
 // Show elapsed time since last update
 chrome.storage.local.get(['lastUpdate'], data => {
     if (data.hasOwnProperty('lastUpdate')) {
@@ -168,6 +182,11 @@ chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             feather.replace();
         }
     });
+});
+
+// Prevent all forms from redirecting
+u('form').on('submit', (event) => {
+    event.preventDefault();
 });
 
 // Add button listeners

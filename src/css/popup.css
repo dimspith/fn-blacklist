@@ -13,3 +13,20 @@ body {
 .modal-content {
     max-height: calc(100vh - 30px) !important;
 }
+
+.tooltip .tiptext {
+    visibility: hidden;
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip .tiptext::after {
+    content: "";
+    position: absolute;
+}
+.tooltip:hover .tiptext {
+    visibility: visible;
+}

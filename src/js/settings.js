@@ -18,7 +18,7 @@ const getSettings = () => {
     });
 
     chrome.storage.local.get(['contributor'], data => {
-        if(data.contributor) {
+        if(data.contributor == true) {
             u(tokenForm).removeClass('is-hidden');
             document.querySelector('.labelling_contributor').checked=true;
         }
