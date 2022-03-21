@@ -2,9 +2,6 @@
 
 import * as utils from './utils.js';
 
-// Get the background page. used for console logging
-// const bg = chrome.extension.getBackgroundPage();
-
 // State of the extension (enabled/disabled)
 var enabled = false;
 
@@ -21,7 +18,6 @@ const apiWarning = document.getElementById("api-warning");
 const updateWarning = document.getElementById("update-warning");
 const labellingForm = u('.labelling_form');
 const labellingDomain = u('.labelling_domain');
-const labellingSubmit = u('.labelling_submit');
 
 // Enables or disables the extension by notifying the background service worker
 const enableOrDisableExtension = () => {
@@ -184,9 +180,13 @@ chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
     });
 });
 
-// Prevent all forms from redirecting
-u('form').on('submit', (event) => {
-    event.preventDefault();
+// Custom redirect for labelling form.
+// Passes domain to the form.
+u('form').handle('submit', (event) => {
+    const domain = u(labellingDomain).first().value;
+    const labelling_url = chrome.runtime.getURL("src/labelling.html")
+          .concat(`?domain=${domain}`);
+    window.open(labelling_url, "_blank");
 });
 
 // Add button listeners

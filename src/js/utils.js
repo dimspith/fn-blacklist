@@ -55,7 +55,12 @@ const getQueryStringParams = (params, url) => {
 
 const getCurrentDomain = (url) => {
     if (url.startsWith(chrome.runtime.getURL(""))) {
-        return new URL(getQueryStringParams('blocked-page', url)).hostname.replace('www.', '');
+        const params = new URLSearchParams(url);
+        if(params.has('blocked-page')) {
+            return new URL(getQueryStringParams('blocked-page', url));            
+        } else {
+            return "";
+        }
     } else {
         return new URL(url).hostname.replace('www.', '');
     }

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Fake News Labelling</title>
+        <link rel="stylesheet" href="css/bulma.min.css"></link>
+        <link rel="stylesheet" href="css/labelling.css"></link>
+    </head>
+    <body>
+        <div class="container px-4">
+            <section class="hero has-text-centered">
+                <div class="hero-body">
+                    <p class="title">
+                        Fake News Labelling
+                    </p>
+                    <p class="subtitle">
+                        You can label domains as Fake News here.
+                        <br/>
+                        If the domain is serving fake news, insert the appropriate tags before submitting.
+                    </p>
+                </div>
+            </section>
+            <form>
+                <div class="field">
+                    <label class="label">Domain <small class="is-size-7">(without scheme, i.e google.com)</small></label>
+                    <div class="control">
+                        <input class="input domain" type="text" name="domain" placeholder="Insert the domain you want to label here..." required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Is the domain serving fake news?</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="is-fake" value="true" required>
+                            Yes
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="is-fake" value="false" required>
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field mb-4">
+                    <label class="label mb-4">Tags</label>
+                    <div class="columns is-multiline">
+                        <label class="column is-half py-1 checkbox">
+                            <input type="checkbox" name="tag-conspiracy-pseudoscience" value="true">
+                            Conspiracy-Pseudoscience
+                        </label>
+                        <label class="column is-half py-1 checkbox">
+                            <input type="checkbox" name="tag-left" value="true">
+                            Left Bias
+                        </label>
+                        <label class="column is-half py-1 checkbox">
+                            <input type="checkbox" name="tag-left-center" value="true">
+                            Left-Center Bias
+                        </label>
+                        <label class="column is-half py-1 checkbox">
+                            <input type="checkbox" name="tag-right" value="true">
+                            Right Bias
+                        </label>
+                        <label class="column is-half py-1 checkbox">
+                            <input type="checkbox" name="tag-right-center" value="true">
+                            Right-Center Bias
+                        </label>
+                        <label class="column is-half py-1 checkbox">
+                            <input type="checkbox" name="tag-questionable-source" value="true">
+                            Questionable Source
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Comments</label>
+                    <div class="control">
+                        <textarea class="textarea" name="comments" placeholder="Insert your comments here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link">Submit</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-light">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script src="js/umbrella.min.js"></script>
+        <script src="js/feather.min.js"></script>
+        <script src="js/feather-replace.js"></script>
+        <script src="js/labelling.js"></script>
+    </body>
+</html>
