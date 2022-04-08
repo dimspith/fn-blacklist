@@ -167,6 +167,8 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
                 chrome.storage.local.set({ 'enabled': false });
                 removeTabListeners();
             }
+            // Dummy response to keep the console quiet
+            sendResponse({ dummy: true });
             break;
 
         // Toggle whitelist status of a domain

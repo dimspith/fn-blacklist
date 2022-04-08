@@ -20,16 +20,15 @@ const labellingForm = u('.labelling_form');
 const labellingDomain = u('.labelling_domain');
 
 // Enables or disables the extension by notifying the background service worker
-const enableOrDisableExtension = () => {
+const toggleExtension = () => {
     enabled = !enabled;
     powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
-
-    chrome.runtime.sendMessage({ message: "toggle", value: enabled });
     if (enabled) {
         powerButton.classList.replace('is-danger', 'is-success');
     } else {
         powerButton.classList.replace('is-success', 'is-danger');
     }
+    chrome.runtime.sendMessage({ message: "toggle", value: enabled });
 };
 
 // Sets the last update time in the UI and localstorage
@@ -66,7 +65,7 @@ const updateWithDiffs = (url) => {
                 insertions: data.insertions,
                 deletions: data.deletions,
                 lastAPIUpdate: data.lastupdate
-            }, function(response) {
+            }, function (response) {
                 if (response.success) {
                     updateButton.classList.remove('is-loading');
                 }
@@ -84,12 +83,12 @@ const updateWithoutDiffs = (url) => {
             chrome.runtime.sendMessage({
                 message: "update",
                 data: data
-            }, function(response) {
+            }, function (response) {
                 if (response.success) {
                     updateButton.classList.remove('is-loading');
                 }
             });
-        }).catch(err => {
+        }).catch(_err => {
             showWarning("api");
         });
 };
@@ -112,7 +111,7 @@ const updateBlacklist = () => {
             .then(res => res.json())
             .then(json => json.lastupdate)
             .then((lastAPIUpdate) => {
-                
+
                 // If we have the most recent list version, don't update.
                 if (lastAPIUpdate <= data.lastAPIUpdate) {
                     showWarning("update");
@@ -139,7 +138,7 @@ const updateBlacklist = () => {
 
 // Get extension state (ON/OFF) 
 chrome.storage.local.get('enabled', data => {
-    enabled = !!data.enabled;
+    enabled = data.enabled;
     powerButtonText.innerHTML = enabled ? 'ON' : 'OFF';
     if (enabled) {
         powerButton.classList.replace('is-danger', 'is-success');
@@ -150,9 +149,9 @@ chrome.storage.local.get('enabled', data => {
 
 // If authorized, enable labelling
 chrome.storage.local.get(['contributor'], data => {
-    if(data.contributor == true) {
+    if (data.contributor == true) {
         u(labellingForm).removeClass('is-hidden');
-        chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
             u(labellingDomain).attr('value', utils.getCurrentDomain(tab[0].url));
         });
 
@@ -169,7 +168,7 @@ chrome.storage.local.get(['lastUpdate'], data => {
 });
 
 // Display whitelist button based on current page's status
-chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
+chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
     let status = utils.siteInWhitelist(tab[0].url);
     status.then((status) => {
         if (status === true) {
@@ -182,18 +181,18 @@ chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
 
 // Custom redirect for labelling form.
 // Passes domain to the form.
-u('form').handle('submit', (event) => {
+u('form').handle('submit', (_event) => {
     const domain = u(labellingDomain).first().value;
     const labelling_url = chrome.runtime.getURL("src/labelling.html")
-          .concat(`?domain=${domain}`);
+        .concat(`?domain=${domain}`);
     window.open(labelling_url, "_blank");
 });
 
 // Add button listeners
-powerButton.addEventListener("click", enableOrDisableExtension);
+powerButton.addEventListener("click", toggleExtension);
 updateButton.addEventListener("click", updateBlacklist);
 whitelistButton.addEventListener("click", () => { utils.togglePageWhitelist(true); });
-settingsButton.addEventListener('click', function() {
+settingsButton.addEventListener('click', function () {
     if (chrome.runtime.openOptionsPage) {
         chrome.runtime.openOptionsPage();
     } else {
@@ -212,10 +211,12 @@ settingsButton.addEventListener('click', function() {
 });
 
 // Add listener to receive messages from background page
-chrome.runtime.onMessage.addListener(function(request) {
+chrome.runtime.onMessage.addListener(function (request) {
     switch (request.result) {
         case 'success':
             updateButton.classList.remove('is-loading');
+            break;
+        default:
             break;
     }
 });
