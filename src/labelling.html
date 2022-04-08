@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="field">
-                    <label class="label">Is the domain serving fake news?</label>
+                    <label class="label">Is the domain serving fake news? <small class="is-size-7">(If the answer is "No", don't select any tags.)</small></label>
                     <div class="control">
                         <label class="radio">
                             <input type="radio" name="is-fake" value="true" required>
@@ -45,6 +45,16 @@
                 <div class="field mb-4">
                     <label class="label mb-4">Tags</label>
                     <div class="columns is-multiline">
+                        <div class="column is-full control">
+                            <label class="radio">
+                                <input type="radio" name="left--fake" value="true" required>
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="is-fake" value="false" required>
+                                No
+                            </label>
+                        </div>
                         <label class="column is-half py-1 checkbox">
                             <input type="checkbox" name="tag-conspiracy-pseudoscience" value="true">
                             Conspiracy-Pseudoscience
@@ -78,7 +88,9 @@
                         <textarea class="textarea" name="comments" placeholder="Insert your comments here..."></textarea>
                     </div>
                 </div>
-
+                <div class="notification is-warning is-light">
+                    If you notice a mistake after submitting, submit again and explain the changes in the comments.
+                </div>
                 <div class="field is-grouped">
                     <div class="control">
                         <button class="button is-link">Submit</button>

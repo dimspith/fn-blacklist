@@ -1,11 +1,13 @@
 // Prevent form from redirecting
 u('form').handle('submit', async e => {
-    const formData = new FormData(e.target);
-    const options = {
-        method: 'POST',
-        body: formData
-    };
-    chrome.storage.local.get(['api'], data => {
+    chrome.storage.local.get(['api', 'token'], data => {
+        const formData = new FormData(e.target);
+        formData.append('token', data.token);
+        const options = {
+            method: 'POST',
+            body: formData
+        };
+        console.log(formData);
         fetch(data.api + "/api/label", options )
             .then( response => response.json() )
             .then( response => {

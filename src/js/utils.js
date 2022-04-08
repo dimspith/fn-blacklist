@@ -55,9 +55,10 @@ const getQueryStringParams = (params, url) => {
 
 const getCurrentDomain = (url) => {
     if (url.startsWith(chrome.runtime.getURL(""))) {
-        const params = new URLSearchParams(url);
-        if(params.has('blocked-page')) {
-            return new URL(getQueryStringParams('blocked-page', url));            
+        const domain = new URL(getQueryStringParams('blocked-page', url)).hostname.replace('www.', '');
+        if(domain != null) {
+            console.log("Domain: " + domain);
+            return domain;
         } else {
             return "";
         }
@@ -90,13 +91,17 @@ const togglePageWhitelist = (isPopup) => {
             var whitelist = data.whitelist;
 
             if (!whitelist.includes(blockedURL)) {
+                console.log("NOT WHITELISTED");
                 if(isPopup) {
                     whitelistButton.classList.replace('is-info', 'is-danger');
                     whitelistButton.innerHTML = whitelistedHTML;                    
                 }
                 whitelist.push(blockedURL);
+                console.log("Url: " + blockedURL);
+                console.log("Whitelist: " + whitelist);
                 chrome.storage.local.set({ 'whitelist': whitelist });
             } else {
+                console.log("WHITELISTED");
                 if(isPopup) {
                     whitelistButton.classList.replace('is-danger', 'is-info');
                     whitelistButton.innerHTML = notWhitelistedHTML;                    
