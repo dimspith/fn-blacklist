@@ -4,30 +4,37 @@
         <link rel="stylesheet" href="css/bulma.min.css"></link>
         <link rel="stylesheet" href="css/blocked.css"></link>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Blocked!</title>
+        <meta charset="UTF-8"/>
     </head>
     <body>
         <div id="main" class="mx-auto box p-4">
             <div class="has-text-centered">
                 <i data-feather="alert-triangle"></i>
-            </div>                
+            </div>
             <h1 class="has-text-centered title is-3">Blocked!</h1>
             <div class="mx-2">
                 <strong>Fake News Blacklist</strong> has prevented the following page from loading:
             </div>
             <div class="columns is-centered py-4 mx-2">
-                <code class="column has-text-centered" id="blockedPage"></code>                
+                <code class="column has-text-centered" id="blockedPage"></code>
             </div>
             <div class="columns is-centered pt-2">
                 <div class="column is-one-third">
-                    <a class="button is-danger is-fullwidth" id="backButton">Go Back</a>                    
+                    <a class="button is-danger is-fullwidth" id="backButton">
+                        Go Back
+                    </a>
                 </div>
                 <div class="column is-one-third">
-                    <button class="button is-info is-fullwidth" id="whitelistAndGoButton">Whitelist and Go</button> </div>
+                    <button class="button is-info is-fullwidth" id="whitelistAndGoButton">
+                        Whitelist & Go
+                    </button>
+                </div>
             </div>
         </div>
         <script src="js/blocked.js" type="module"></script>
         <script src="js/feather.min.js"></script>
-        <script src="js/utils.js" type="module"></script>        
+        <script src="js/utils.js" type="module"></script>
         <script src="js/feather-replace.js"></script>
     </body>
 </html>

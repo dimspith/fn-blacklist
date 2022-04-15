@@ -12,7 +12,7 @@ const redownloadButton = u('.actions_re-download');
 // Configure toast
 bulmaToast.setDefaults({
   duration: 3000,
-  position: 'center',
+  position: 'top-center',
   closeOnClick: true,
 });
 
@@ -63,10 +63,12 @@ const addListeners = () => {
         }
     });
 
+    // Reset the extension
     u(resetButton).on('click', () => {
         chrome.runtime.sendMessage({message: "reset"});
         bulmaToast.toast({ message: 'Extension was reset successfully!', type: 'is-success' });
     });
+
 };
 
 // Prevent all forms from redirecting
