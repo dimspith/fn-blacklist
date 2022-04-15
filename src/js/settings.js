@@ -6,6 +6,15 @@ const token = u('.labelling_token');
 const tokenSubmit = u('.labelling_token-submit');
 const contributor = u('.labelling_contributor');
 const tokenForm = u('.labelling_token-form');
+const resetButton = u('.actions_reset');
+const redownloadButton = u('.actions_re-download');
+
+// Configure toast
+bulmaToast.setDefaults({
+  duration: 3000,
+  position: 'center',
+  closeOnClick: true,
+});
 
 // Get relevant settings from localstorage
 const getSettings = () => {
@@ -52,6 +61,11 @@ const addListeners = () => {
             chrome.runtime.sendMessage({message: "set-contributor",
                                         value: false});
         }
+    });
+
+    u(resetButton).on('click', () => {
+        chrome.runtime.sendMessage({message: "reset"});
+        bulmaToast.toast({ message: 'Extension was reset successfully!', type: 'is-success' });
     });
 };
 
