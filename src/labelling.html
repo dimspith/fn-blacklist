@@ -43,42 +43,39 @@
                 </div>
 
                 <div class="field mb-4">
-                    <label class="label mb-4">Tags</label>
+                    <label class="label my-2">Bias</label>
                     <div class="columns is-multiline">
                         <div class="column is-full control">
                             <label class="radio">
-                                <input type="radio" name="left--fake" value="true" required>
-                                Yes
+                                <input type="radio" name="bias" value="none" checked="checked">
+                                None
                             </label>
                             <label class="radio">
-                                <input type="radio" name="is-fake" value="false" required>
-                                No
+                                <input type="radio" name="bias" value="left">
+                                Left
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="bias" value="left-center">
+                                Left-Center
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="bias" value="right">
+                                Right
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="bias" value="right-center">
+                                Right-Center
+                            </label>
+                            <label class="label my-2">Other</label>
+                            <label class="column is-half py-1 checkbox">
+                                <input type="checkbox" name="tag-conspiracy-pseudoscience" value="true">
+                                Conspiracy-Pseudoscience
+                            </label>
+                            <label class="column is-half py-1 checkbox">
+                                <input type="checkbox" name="tag-questionable-source" value="true">
+                                Questionable Source
                             </label>
                         </div>
-                        <label class="column is-half py-1 checkbox">
-                            <input type="checkbox" name="tag-conspiracy-pseudoscience" value="true">
-                            Conspiracy-Pseudoscience
-                        </label>
-                        <label class="column is-half py-1 checkbox">
-                            <input type="checkbox" name="tag-left" value="true">
-                            Left Bias
-                        </label>
-                        <label class="column is-half py-1 checkbox">
-                            <input type="checkbox" name="tag-left-center" value="true">
-                            Left-Center Bias
-                        </label>
-                        <label class="column is-half py-1 checkbox">
-                            <input type="checkbox" name="tag-right" value="true">
-                            Right Bias
-                        </label>
-                        <label class="column is-half py-1 checkbox">
-                            <input type="checkbox" name="tag-right-center" value="true">
-                            Right-Center Bias
-                        </label>
-                        <label class="column is-half py-1 checkbox">
-                            <input type="checkbox" name="tag-questionable-source" value="true">
-                            Questionable Source
-                        </label>
                     </div>
                 </div>
 
