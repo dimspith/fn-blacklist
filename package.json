@@ -1,0 +1,24 @@
+{
+  "name": "fn-blacklist",
+  "version": "0.1.0",
+  "description": "**A browser extension that blocks fake news sites according to a content-agnostic ML classifier**",
+  "main": "index.js",
+  "scripts": {
+    "build": "node-sass --output-style expanded --include-path=node_modules/ sass/custom.scss src/css/bulma.min.css",
+    "start": "pnpm run build -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimspith/fn-blacklist.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimspith/fn-blacklist/issues"
+  },
+  "homepage": "https://github.com/dimspith/fn-blacklist#readme",
+  "devDependencies": {
+    "bulma": "^0.9.3",
+    "node-sass": "^7.0.1"
+  }
+}

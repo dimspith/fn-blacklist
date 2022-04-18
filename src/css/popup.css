@@ -1,8 +1,6 @@
 body {
-    /* overflow: show; */
-    /* white-space: nowrap; */
-    /* width: fit-content; */
-    /* width: -moz-fit-content; */
+    background-color: #fafafa;
+    text-color: #1a2a3a;
     width: 500px;
 }
 
@@ -30,3 +28,26 @@ body {
 .tooltip:hover .tiptext {
     visibility: visible;
 }
+
+.border-light-red {
+    border: 1px solid #FFCDD2;    
+}
+
+.divlabel {
+    width: 130px;
+    height: 15px;
+    bottom: 100%;
+    position: absolute;
+    left: 0;
+}
+
+.update {
+    display: block;
+    position: relative;
+}
+
+.labelling_form {
+    display: block;
+    position: relative;
+}
+

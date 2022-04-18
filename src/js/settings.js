@@ -11,9 +11,10 @@ const redownloadButton = u('.actions_re-download');
 
 // Configure toast
 bulmaToast.setDefaults({
-  duration: 3000,
-  position: 'top-center',
-  closeOnClick: true,
+    duration: 3000,
+    position: 'top-center',
+    closeOnClick: true,
+    dismissible: true
 });
 
 // Get relevant settings from localstorage
