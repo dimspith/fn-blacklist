@@ -6,69 +6,88 @@
         <link rel="stylesheet" href="css/bulma.min.css"></link>
         <link rel="stylesheet" href="css/options.css"></link>
     </head>
-    <body class="mx-1 my-1">
-        <div class="box p-2" id="main">
-            <div class="updates pt-5 px-1">
-                <div class="title is-3">Updates</div>
-                <div class="box">
-                    <div class="option mb-4">
-                        <input type="checkbox" class="check mr-1" disabled>
-                        Auto-update blacklist every
-                        <input class="input checkInput" id="updateInterval" type="text" value="1" disabled>
-                        days
-                    </div>
-                    <form>
-                        <div class="field">
-                            <label class="label">API URL</label>
-                            <div class="columns">
-                                <div class="column control px-1">
-                                    <input class="input updates_custom-api" type="text" placeholder="Text input">
-                                </div>
-                                <div class="column control px-1">
-                                    <button class="button is-primary updates_custom-api-submit">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="title is-3">Advanced</div>
-                <div class="box">
-                    <div class="title is-5">Domain Labelling</div>
-                    <div class="notification is-warning is-light">
-                        <strong>Warning:</strong> For advanced users only.
-                        <br/>
-                        You need an Authentication token to contribute.
-                    </div>
-                    <div class="option mb-4">
-                        <input type="checkbox" class="labelling_contributor check mr-1">
-                        I want to contribute to the blacklist
-                    </div>
-                    <form class="labelling_token-form is-hidden">
-                        <div class="field">
-                            <label class="label">Token</label>
-                            <div class="columns">
-                                <div class="column control px-1">
-                                    <input class="input labelling_token" type="text" placeholder="Text input">
-                                </div>
-                                <div class="column control px-1">
-                                    <button class="button is-primary labelling_token-submit">Submit</button>
+    <body>
+        <div class="columns is-centered is-multiline" id="main">
+
+            <div class="card column is-full">
+                <header class="card-header">
+                    <p class="is-size-4 card-header-title">
+                        Updates
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <form>
+                            <div class="field">
+                                <label class="label">API URL</label>
+                                <div class="columns is-1 is-variable">
+                                    <div class="column is-4 control ">
+                                        <input class="input updates_custom-api" type="text" placeholder="Text input">
+                                    </div>
+                                    <div class="column control">
+                                        <button class="button is-primary updates_custom-api-submit">Submit</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                
-                <div class="box">
-                    <div class="title is-5">Actions</div>
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <button class="actions_reset button is-danger is-light">
-                                Reset extension
-                            </button>
-                        </p>
+                        </form>
                     </div>
                 </div>
             </div>
+
+            <div class="card column is-full">
+                <header class="card-header">
+                    <p class="is-size-4 card-header-title">
+                        Advanced
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <div class="title is-5">Domain Labelling</div>
+                        <div class="notification is-warning is-light">
+                            <strong>Warning:</strong> For advanced users only.
+                            <br/>
+                            You need an Authentication token to contribute.
+                        </div>
+                        <div class="option mb-4">
+                            <input type="checkbox" class="labelling_contributor check mr-1">
+                            I want to contribute to the blacklist
+                        </div>
+                        <form class="labelling_token-form is-hidden">
+                            <div class="field">
+                                <label class="label">Token</label>
+                                <div class="columns">
+                                    <div class="column is-4 control px-1">
+                                        <input class="input labelling_token" type="text" placeholder="Insert token here...">
+                                    </div>
+                                    <div class="column control px-1">
+                                        <button class="button is-primary labelling_token-submit">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card column is-full">
+                <header class="card-header">
+                    <p class="is-size-4 card-header-title">
+                        Actions
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <div class="field is-grouped">
+                            <p class="control">
+                                <button class="actions_reset button is-danger is-light">
+                                    Reset extension
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>                
         <script src="js/feather.min.js"></script>
         <script src="js/umbrella.min.js"></script>

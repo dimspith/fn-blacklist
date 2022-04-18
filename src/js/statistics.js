@@ -6,7 +6,7 @@ const blacklistSize = u(".blacklist-size");
 
 const getWhitelistHTML = (domain) => {
     return `
-<span class="whitelist-elem tag column is-full">
+<span class="is-size-6 whitelist-elem tag column is-full">
     <div class="whitelist-site">${domain}</div>
     <button class="whitelist-delete ml-auto delete"></button>
 </span>`;
