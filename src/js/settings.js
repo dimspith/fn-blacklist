@@ -43,6 +43,7 @@ const addListeners = () => {
             message: "set-api",
             value: u(customAPI).first().value
         });
+        bulmaToast.toast({ message: 'API URL submitted successfully!', type: 'is-success' });
     });
 
     u(tokenSubmit).on('click', () => {
@@ -50,6 +51,7 @@ const addListeners = () => {
             message: "set-token",
             value: u(token).first().value
         });
+        bulmaToast.toast({ message: 'Token submitted successfully!', type: 'is-success' });
     });
 
     u(contributor).on('click', () => {

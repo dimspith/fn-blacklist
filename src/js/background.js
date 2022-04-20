@@ -98,6 +98,16 @@ const removeTabListeners = () => {
     chrome.tabs.onUpdated.removeListener(checkOnTabUpdate);
 };
 
+// Set extension status on startup
+chrome.runtime.onStartup.addListener(function() {
+    chrome.storage.local.get(['enabled'], data => {
+        if (data.hasOwnProperty('enabled') && data.enabled) {
+            addTabListeners();
+        }
+    });    
+});
+
+
 // ---------- Startup Procedures ----------
 const populateLocalStorage = () => {
     // Set the API's default URL

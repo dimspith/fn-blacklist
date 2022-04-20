@@ -31,7 +31,7 @@ iframe {
 	background-color: transparent;
 	border: 0;
 	width: 100%;
-    overflow: scroll !important;
+    overflow: hidden !important;
     scrollbar-width: none;
 }
 
