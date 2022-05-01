@@ -98,22 +98,26 @@ const removeTabListeners = () => {
     chrome.tabs.onUpdated.removeListener(checkOnTabUpdate);
 };
 
-// Set extension status on startup
-chrome.runtime.onStartup.addListener(function() {
+const reloadTabListeners = () => {
     chrome.storage.local.get(['enabled'], data => {
         if (data.hasOwnProperty('enabled') && data.enabled) {
             addTabListeners();
+        } else {
+            removeTabListeners();
         }
-    });    
-});
-
+    });
+};
 
 // ---------- Startup Procedures ----------
 const populateLocalStorage = () => {
-    // Set the API's default URL
+    // Set the enabled status. Also add listeners when extension is enabled.
     chrome.storage.local.get(['enabled'], data => {
         if (!data.hasOwnProperty('enabled')) {
             chrome.storage.local.set({ 'enabled': false });
+        } else if(!data.enabled) {
+            removeTabListeners();
+        } else {
+            addTabListeners();
         }
     });
 
@@ -205,6 +209,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             'lastUpdate': Date.now(),
             'lastAPIUpdate': request.data.lastupdate
         });
+        reloadTabListeners();
         sendResponse({ success: true });
         break;
 
@@ -222,6 +227,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
                 'lastAPIUpdate': request.lastAPIUpdate
             });
         });
+        reloadTabListeners();
         sendResponse({ success: true });
         break;
 

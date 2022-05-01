@@ -1,16 +1,38 @@
 $radius: 3px;
 
-// Custom Colors
-$white: #fafafa;
-$black: #212121;
-$orange: #FF5722;
-$yellow: #FFEB3B;
-$green: #8BC34A;
-$turquoise: #009688;
-$cyan: #26C6DA;
-$blue: #3F51B5;
-$purple: #9C27B0;
-$red: #D32F2F;
+//////////////////////////////////////////
+// Colors from OpenColor with additions //
+//////////////////////////////////////////
+
+$white: #fff;
+$black: #212529;
+
+// Primary
+$turquoise: #4263eb;
+
+// Link
+$blue: #1971c2;
+
+// Info
+$cyan: #15aabf;
+
+// Success
+$green: #40c057;
+
+// Warning
+$yellow: #ffd43b;
+
+// Danger
+$red: #f03e3e;
+
+// Shades
+$black-bis: #1a1d21;
+$black-ter: #212529;
+$grey-dark: #495057;
+$grey-light: #adb5bd;
+$grey-lighter: #ced4da;
+$white-ter: #f1f3f5;
+$white-bis: #f8f9fa;
 
 // Import Bulma
 @import "node_modules/bulma/bulma"
