@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="p-3">
-            <div class="title mb-4 is-6">
+            <div class="title is-6">
                 Fake News Blacklist <strong>v0.1.0</strong>
             </div>
             <div class="columns is-mobile">
@@ -43,15 +43,14 @@
                 </div>
             </div>
 
-
-            <form class="labelling_form box p-0 is-hidden mt-5 mb-6">
-                <div class="has-background-danger-light field p-5">
-                    <span class="divlabel is-underlined tag has-background-danger-light">Domain to label</span>
+            <strong class="labelling_form mt-3 mb-0 tag has-background-danger-light heading is-hidden">Domain to label</strong>
+            <form class="labelling_form box p-0 is-hidden mb-5">
+                <div class="has-background-danger-light field p-4">
                     <div class="columns is-mobile">
-                        <div class="column is-three-quarters control px-1">
+                        <div class="column is-three-quarters control pr-2">
                             <input class="input labelling_domain" name="" type="text" value=""/>
                         </div>
-                        <div class="column control px-1">
+                        <div class="column is-one-quarter control">
                             <button class="labelling_submit button is-danger is-outlined is-fullwidth">Label</button>
                         </div>
                     </div>
@@ -59,8 +58,8 @@
             </form>
 
 
-            <div class="mx-0 mt-5 box p-0 has-background-warning-light blacklist columns is-mobile is-align-items-center is-justify-content-space-between update">
-                <span class="divlabel tag has-background-warning-light is-underlined">Last update attempt</span>
+            <strong class="tag has-background-warning-light heading">Last update attempt</strong>
+            <div class="mx-0 box p-0 has-background-warning-light blacklist columns is-mobile is-align-items-center is-justify-content-space-between update">
                 <div class="has-text-left updates column is-8">
                     <strong id="lastUpdate"></strong>
                 </div>

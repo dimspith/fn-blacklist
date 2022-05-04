@@ -33,14 +33,6 @@ body {
     border: 1px solid #FFCDD2;    
 }
 
-.divlabel {
-    width: 130px;
-    height: 15px;
-    bottom: 100%;
-    position: absolute;
-    left: 0;
-}
-
 .update {
     display: block;
     position: relative;
