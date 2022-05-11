@@ -14,8 +14,11 @@ const whitelistButton = document.getElementById("whitelistButton");
 const updateButton = document.getElementById("updateButton");
 const lastUpdateElem = document.getElementById("lastUpdate");
 const modal = document.getElementById("modal");
+
 const apiWarning = document.getElementById("api-warning");
 const updateWarning = document.getElementById("update-warning");
+const updateSuccess = document.getElementById("update-success");
+
 const labellingForm = u('.labelling_form');
 const labellingDomain = u('.labelling_domain');
 
@@ -47,6 +50,8 @@ const showWarning = (warning) => {
         case "api":
             apiWarning.classList.remove('is-hidden');
             break;
+        case "success":
+            updateSuccess.classList.remove('is-hidden');
         default:
             break;
     }
@@ -68,6 +73,7 @@ const updateWithDiffs = (url) => {
             }, function (response) {
                 if (response.success) {
                     updateButton.classList.remove('is-loading');
+                    showWarning("success");
                 }
             });
         }).catch(_ => {
