@@ -1,6 +1,6 @@
 'use strict';
 
-// ---------- Function Declarations ----------
+// ---------- Function Declarations ---------
 
 // Binary search algorithm
 function binarySearch(items, value) {
@@ -200,6 +200,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
                 chrome.storage.local.set({ 'whitelist': whitelist });
             }
         });
+        sendResponse({ dummy: true });
         break;
 
         // Update the blacklist by downloading the latest version
