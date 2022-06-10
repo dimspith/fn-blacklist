@@ -24,9 +24,9 @@ const addNavListeners = () => {
     navItems.map((node) => {
 
         u(node).on('click', () => {
-            var navLink = u(node).children('a:first-child');
-            var sourceFile = u(navLink).attr('href').replace('#', '');
-            var sourceFileURL = chrome.runtime.getURL('src/' + sourceFile + '.html');
+            const navLink = u(node).children('a:first-child');
+            const sourceFile = u(navLink).attr('href').replace('#', '');
+            const sourceFileURL = chrome.runtime.getURL('src/' + sourceFile + '.html');
             u('#contents').attr({ src: sourceFileURL });
 
             navItems.map((node) => {

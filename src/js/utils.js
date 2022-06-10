@@ -1,7 +1,5 @@
 'use strict';
 
-const bg = chrome.extension.getBackgroundPage();
-
 const notWhitelistedHTML = `
 <span class="icon-text">
     <span class="icon is-large">
@@ -45,17 +43,17 @@ const elapsedTimeToString = (timestamp) => {
 
 const getQueryStringParams = (params, url) => {
     // first decode URL to get readable data
-    var href = decodeURIComponent(url);
+    const href = decodeURIComponent(url);
     // regular expression to get value
-    var regEx = new RegExp('[?&]' + params + '=([^&#]*)', 'i');
-    var value = regEx.exec(href);
+    const regEx = new RegExp('[?&]' + params + '=([^&#]*)', 'i');
+    const value = regEx.exec(href);
     // return the value if it exists
     return value ? value[1] : null;
 };
 
 const getCurrentDomain = (url) => {
     if (url.startsWith(chrome.runtime.getURL(""))) {
-        const blocked = getQueryStringParams('blocked-page', url);
+        const blocked = getQueryStringParams('blocked-domain', url);
         if(blocked != null) {
             return new URL(blocked).hostname.replace('www.', '');
         } else {

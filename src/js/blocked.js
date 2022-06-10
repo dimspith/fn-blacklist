@@ -2,23 +2,30 @@
 
 import { togglePageWhitelist } from "./utils.js";
 
-const blockedPage = document.getElementById("blockedPage");
-const backButton = document.getElementById("backButton");
-const goButton = document.getElementById("whitelistAndGoButton");
+// const blockedPage = document.getElementById("blockedPage");
+// const backButton = document.getElementById("backButton");
+// const goButton = document.getElementById("whitelistAndGoButton");
+
+const blockedDomain = u("#blockedDomain");
+const backButton = u("#backButton");
+const whitelistButton = u("#whitelistButton");
 
 const urlParams = new URLSearchParams(window.location.search);
-let blockedURL = urlParams.get('blocked-page');
-let domain = (new URL(blockedURL)).hostname.replace('www.', '');
+const blockedURL = urlParams.get('blocked-domain');
+const domain = (new URL(blockedURL)).hostname.replace('www.', '');
 
-const whitelistSiteAndGo = () => {
+// Whitelist domain and visit it
+const whitelistDomainAndGo = function() {
     togglePageWhitelist(false);
     window.location.replace(blockedURL);
 };
 
 // Add blocked url to page
-blockedPage.innerHTML = domain;
+blockedDomain.text(domain);
 
-// Go to the previous site when pressing "Go Back"
-backButton.addEventListener("click", () => { window.history.go(-2); });
+// Go to the previous page in history
+backButton.on('click', function() {
+    window.history.go(-2);
+});
 
-goButton.addEventListener("click", whitelistSiteAndGo);
+whitelistButton.on('click', whitelistDomainAndGo);

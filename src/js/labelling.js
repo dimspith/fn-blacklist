@@ -23,6 +23,6 @@ u('form').handle('submit', async e => {
 
 const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.has('domain')) {
-    let domain = urlParams.get('domain');
+    const domain = urlParams.get('domain');
     u('.domain').attr('value', domain);
 }

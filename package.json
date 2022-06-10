@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/dimspith/fn-blacklist.git"
   },
-  "author": "",
+  "author": "dimspith",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dimspith/fn-blacklist/issues"

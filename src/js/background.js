@@ -59,7 +59,7 @@ const blockIfFake = (url, tabID) => {
         } else if (binarySearch(data.urls, domain)) {
             console.log(domain + " not whitelisted!");
             let blocked = chrome.runtime.getURL("src/blocked.html")
-                .concat(`?blocked-page=${url}`);
+                .concat(`?blocked-domain=${url}`);
             chrome.tabs.update(tabID, { url: blocked });
         }
     });
@@ -68,22 +68,25 @@ const blockIfFake = (url, tabID) => {
 
 // Check if active tab is in the blacklist
 const checkOnActiveTab = (activeInfo) => {
+    console.time("(ACT) Blocking");
+
     chrome.tabs.get(activeInfo.tabId, function(tab) {
-        const url = tab.url;
-        console.time("Blocking");
-        blockIfFake(url, tab.id);
-        console.timeEnd("Blocking");
+        blockIfFake(tab.url, tab.id);
     });
+
+    console.timeEnd("(ACT) Blocking");
 };
 
 // Check if updated tab tab is in the blacklist
 const checkOnTabUpdate = (tabID, change, tab) => {
+    console.time("(UPD) Blocking");
+
     if (tab.active && change.url) {
         const url = change.url;
-        console.time("Blocking");
         blockIfFake(url, tab.id);
-        console.timeEnd("Blocking");
     }
+
+    console.timeEnd("(UPD) Blocking");
 };
 
 // Add listeners on activated and updated tabs
