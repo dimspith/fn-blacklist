@@ -107,6 +107,7 @@ const updateWithoutDiffs = (url) => {
       }, function (response) {
         if (response.success) {
           updateButton.removeClass("is-loading");
+          showWarning("success");
         }
       });
     }).catch((_err) => {
@@ -116,7 +117,7 @@ const updateWithoutDiffs = (url) => {
 
 // Update the blacklist
 const updateBlacklist = () => {
-  let current = Date.now();
+  const current = Date.now();
 
   updateButton.addClass("is-loading");
 
