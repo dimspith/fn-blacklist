@@ -33,7 +33,7 @@ chrome.storage.local.get(['whitelist', 'urls'], data => {
 
         // Add whitelist and blacklist counts
         if(data.whitelist) {
-            u(whitelistSize).text(data.whitelist.length);            
+            u(whitelistSize).text(data.whitelist.length);
         }
         if(data.urls) {
             u(blacklistSize).text(data.urls.length);            

@@ -151,6 +151,13 @@ const populateLocalStorage = () => {
             chrome.storage.local.set({ 'whitelist': [] });
         }
     });
+    
+    // Set the whitelist to an empty array
+    chrome.storage.local.get(['urls'], data => {
+        if (!data.hasOwnProperty('urls')) {
+            chrome.storage.local.set({ 'urls': [] });
+        }
+    });
 
     // Set the whitelist to an empty array
     chrome.storage.local.get(['token'], data => {
