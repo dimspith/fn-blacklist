@@ -47,6 +47,11 @@ u('form').handle('submit', async e => {
     });
 });
 
+// Cancel button closes page
+u('.cancel').on("click", () => {
+    window.close();
+});
+
 const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.has('domain')) {
     const domain = urlParams.get('domain');
