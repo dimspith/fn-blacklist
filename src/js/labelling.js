@@ -1,3 +1,11 @@
+// Configure Toast
+bulmaToast.setDefaults({
+  duration: 3000,
+  position: "top-center",
+  closeOnClick: true,
+  dismissible: true,
+});
+
 // Prevent form from redirecting
 u('form').handle('submit', async e => {
     chrome.storage.local.get(['api', 'token'], data => {
@@ -16,8 +24,26 @@ u('form').handle('submit', async e => {
         fetch(data.api + "/api/label", options )
             .then( response => response.json() )
             .then( response => {
-                console.log(response);
-            });        
+                switch(response.result) {
+                case "success":
+                    bulmaToast.toast({
+                        message: "Label submitted successfully!",
+                        type: "is-success",
+                    });
+                    break;
+                case "failure":
+                    bulmaToast.toast({
+                        message: response.error,
+                        type: "is-danger",
+                    });
+                    break;
+                }
+            }).catch((_err) => {
+                bulmaToast.toast({
+                    message: "Unable to submit. Try again later.",
+                    type: "is-danger",
+                });
+            });;
     });
 });
 
