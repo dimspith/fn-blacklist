@@ -10,7 +10,7 @@ const resetButton = u(".actions_reset");
 
 // Configure toast
 bulmaToast.setDefaults({
-  duration: 3000,
+  duration: 5000,
   position: "top-center",
   closeOnClick: true,
   dismissible: true,
@@ -70,11 +70,21 @@ const addListeners = () => {
 
   // Reset the extension
   u(resetButton).on("click", () => {
-    chrome.runtime.sendMessage({ message: "reset" });
-    bulmaToast.toast({
-      message: "Extension was reset successfully!",
-      type: "is-success",
-    });
+      chrome.runtime.sendMessage(
+          { message: "reset" },
+          function (response) {
+              if(response.success) {
+                  bulmaToast.toast({
+                      message: "Extension was reset successfully! Please reload this page.",
+                      type: "is-success",
+                  });
+              } else {
+                  bulmaToast.toast({
+                      message: "Failed to reset extension, this is probably a bug.",
+                      type: "is-danger",
+                  });
+              }
+          });
   });
 };
 
