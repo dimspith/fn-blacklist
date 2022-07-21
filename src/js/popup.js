@@ -19,19 +19,6 @@ const apiWarning = u("#api-warning");
 const updateWarning = u("#update-warning");
 const updateSuccess = u("#update-success");
 
-// const powerButton = document.getElementById("OnOffButton");
-// const powerButtonText = document.getElementById("OnOff");
-// const settingsButton = document.getElementById("SettingsButton");
-// const whitelistButton = document.getElementById("whitelistButton");
-
-// const updateButton = document.getElementById("updateButton");
-// const lastUpdateElem = document.getElementById("lastUpdate");
-// const modal = document.getElementById("modal");
-
-// const apiWarning = document.getElementById("api-warning");
-// const updateWarning = document.getElementById("update-warning");
-// const updateSuccess = document.getElementById("update-success");
-
 const labellingForm = u(".labelling_form");
 const labellingDomain = u(".labelling_domain");
 
