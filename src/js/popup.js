@@ -40,17 +40,17 @@ const setLastUpdateTime = () => {
 // Show a specific warning
 const showWarning = (warning) => {
     switch (warning) {
-    case "update":
-        updateWarning.removeClass("is-hidden");
-        break;
-    case "api":
-        apiWarning.removeClass("is-hidden");
-        break;
-    case "success":
-        updateSuccess.removeClass("is-hidden");
-        break;
-    default:
-        break;
+        case "update":
+            updateWarning.removeClass("is-hidden");
+            break;
+        case "api":
+            apiWarning.removeClass("is-hidden");
+            break;
+        case "success":
+            updateSuccess.removeClass("is-hidden");
+            break;
+        default:
+            break;
     }
     modal.addClass("is-active");
     updateButton.removeClass("is-loading");
@@ -67,7 +67,7 @@ const updateWithDiffs = (url) => {
                 insertions: data.insertions,
                 deletions: data.deletions,
                 lastAPIUpdate: data.lastupdate,
-            }, function (response) {
+            }, function(response) {
                 if (response.success) {
                     updateButton.removeClass("is-loading");
                     showWarning("success");
@@ -86,7 +86,7 @@ const updateWithoutDiffs = (url) => {
             chrome.runtime.sendMessage({
                 message: "update",
                 data: data,
-            }, function (response) {
+            }, function(response) {
                 if (response.success) {
                     updateButton.removeClass("is-loading");
                     showWarning("success");
@@ -151,7 +151,7 @@ chrome.storage.local.get("enabled", (data) => {
 chrome.storage.local.get(["contributor"], (data) => {
     if (data.contributor == true) {
         u(labellingForm).removeClass("is-hidden");
-        chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
+        chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             u(labellingDomain).attr("value", utils.getCurrentDomain(tab[0].url));
         });
     }
@@ -167,8 +167,8 @@ chrome.storage.local.get(["lastUpdate"], (data) => {
 });
 
 // Display whitelist button based on current page's status
-chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
-    let status = utils.siteInWhitelist(tab[0].url);
+chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
+    let status = utils.domainInWhitelist(tab[0].url);
     status.then((status) => {
         if (status === true) {
             whitelistButton.toggleClass(["is-info", "is-danger"]);
@@ -183,7 +183,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
 u("form").handle("submit", (_event) => {
     const domain = u(labellingDomain).first().value;
     const labelling_url = chrome.runtime.getURL("src/labelling.html")
-          .concat(`?domain=${domain}`);
+        .concat(`?domain=${domain}`);
     window.open(labelling_url, "_blank");
 });
 
@@ -191,9 +191,9 @@ u("form").handle("submit", (_event) => {
 powerButton.on("click", toggleExtension);
 updateButton.on("click", updateBlacklist);
 whitelistButton.on("click", () => {
-    utils.togglePageWhitelist(true);
+    utils.toggleDomainWhitelist(true);
 });
-settingsButton.on("click", function () {
+settingsButton.on("click", function() {
     if (chrome.runtime.openOptionsPage) {
         chrome.runtime.openOptionsPage();
     } else {
@@ -214,12 +214,12 @@ settingsButton.on("click", function () {
 });
 
 // Add listener to receive messages from background page
-chrome.runtime.onMessage.addListener(function (request) {
+chrome.runtime.onMessage.addListener(function(request) {
     switch (request.result) {
-    case "success":
-        updateButton.classList.remove("is-loading");
-        break;
-    default:
-        break;
+        case "success":
+            updateButton.classList.remove("is-loading");
+            break;
+        default:
+            break;
     }
 });

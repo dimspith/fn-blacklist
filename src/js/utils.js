@@ -64,7 +64,7 @@ const getCurrentDomain = (url) => {
     }
 };
 
-const siteInWhitelist = async (url) => {
+const domainInWhitelist = async (url) => {
     return new Promise(resolve => {
         chrome.storage.local.get('whitelist', (data) => {
             let whitelist = data.whitelist;
@@ -81,7 +81,7 @@ const siteInWhitelist = async (url) => {
 
 // Toggles whitelist status on current page.
 // Argument specifies whether this function is called in the popup.
-const togglePageWhitelist = (isPopup) => {
+const toggleDomainWhitelist = (isPopup) => {
     chrome.storage.local.get(['whitelist'], (data) => {
         chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             const blockedURL = getCurrentDomain(tab[0].url);
@@ -117,6 +117,6 @@ export {
     elapsedTimeToString,
     getQueryStringParams,
     getCurrentDomain,
-    siteInWhitelist,
-    togglePageWhitelist
+    domainInWhitelist,
+    toggleDomainWhitelist
 };

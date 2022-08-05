@@ -10,18 +10,6 @@
     </head>
     <body>
         <div class="columns is-centered is-multiline p-2" id="main">
-            <div class="card column is-full mb-3">
-                <header class="card-header is-shadowless">
-                    <p class="is-size-4 card-header-title">
-                        Whitelisted Domains
-                    </p>
-                    <button id="delete-all" class="is-danger button my-auto card-header-icon">Delete All</button>
-                </header>
-                <div class="card-content">
-                    <div class="whitelist-list content columns is-multiline is-mobile">
-                    </div>
-                </div>
-            </div>
             <div class="box column is-full">
                 <nav class="column level is-mobile is-full is-left-centered">
                     <div class="level-item has-text-centered">
@@ -37,6 +25,29 @@
                         </div>
                     </div>
                 </nav>
+            </div>
+            <div class="card column is-full">
+                <header class="card-header is-shadowless">
+                    <p class="is-size-4 card-header-title">
+                        Whitelisted Domains
+                    </p>
+                    <button id="delete-all" class="is-danger button my-auto card-header-icon">Delete All</button>
+                </header>
+                <div class="card-content">
+                    <div class="whitelist-list content columns is-multiline is-mobile">
+                    </div>
+                </div>
+            </div>
+            <div class="card column is-full">
+                <header class="card-header is-shadowless">
+                    <p class="is-size-4 card-header-title">
+                        Blacklisted Domains
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="blacklist-list content columns is-multiline is-mobile">
+                    </div>
+                </div>
             </div>
         </div>
         <script src="js/feather.min.js"></script>

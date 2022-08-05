@@ -1,6 +1,6 @@
 'use strict';
 
-import { togglePageWhitelist } from "./utils.js";
+import { toggleDomainWhitelist } from "./utils.js";
 
 // const blockedPage = document.getElementById("blockedPage");
 // const backButton = document.getElementById("backButton");
@@ -16,7 +16,7 @@ const domain = (new URL(blockedURL)).hostname.replace('www.', '');
 
 // Whitelist domain and visit it
 const whitelistDomainAndGo = function() {
-    togglePageWhitelist(false);
+    toggleDomainWhitelist(false);
     window.location.replace(blockedURL);
 };
 
