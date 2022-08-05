@@ -257,8 +257,18 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         chrome.storage.local.set({ 'token': request.value });
         break;
     case "reset":
-        chrome.storage.local.clear();
-        populateLocalStorage();
+        // Set the last client update to 0
+        chrome.storage.local.set({ 'lastUpdate': 0 });
+
+        // Set the last API update to 0
+        chrome.storage.local.set({ 'lastAPIUpdate': 0 });
+
+        // Set the whitelist to an empty array
+        chrome.storage.local.set({ 'whitelist': [] });
+        
+        // Set the whitelist to an empty array
+        chrome.storage.local.set({ 'urls': [] });
+
         sendResponse({ success: true });
         break;
     default:

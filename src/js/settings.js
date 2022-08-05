@@ -68,19 +68,19 @@ const addListeners = () => {
     }
   });
 
-  // Reset the extension
+  // Reset lists
   u(resetButton).on("click", () => {
       chrome.runtime.sendMessage(
           { message: "reset" },
           function (response) {
               if(response.success) {
                   bulmaToast.toast({
-                      message: "Extension was reset successfully! Please reload this page.",
+                      message: "Lists were reset successfully!",
                       type: "is-success",
                   });
               } else {
                   bulmaToast.toast({
-                      message: "Failed to reset extension, this is probably a bug.",
+                      message: "Failed to reset lists, this is probably a bug.",
                       type: "is-danger",
                   });
               }
