@@ -5,10 +5,12 @@ const blacklist = u(".blacklist-list");
 const whitelistSize = u(".whitelist-size");
 const blacklistSize = u(".blacklist-size");
 
+
+
 const getWhitelistHTML = (domain) => {
     return `
 <span class="is-size-6 whitelist-elem tag is-white column is-full">
-    <a href="${domain}" target="_blank" class="whitelist-domain">${domain}</a>
+    <a href="http://${domain}" target="_blank" class="whitelist-domain">${domain}</a>
     <button class="whitelist-delete ml-auto delete"></button>
 </span>`;
 };
@@ -16,12 +18,14 @@ const getWhitelistHTML = (domain) => {
 const getBlacklistHTML = (domain) => {
     return `
 <span class="is-size-6 blacklist-elem tag is-white column is-full">
-    <a href="${domain}" target="_blank" class="mr-auto">${domain}</a>
+    <a href="http://${domain}" target="_blank" class="mr-auto">${domain}</a>
 </span>`;
 };
 
 chrome.storage.local.get(['whitelist', 'urls'], data => {
     if (data.hasOwnProperty('whitelist')) {
+
+        var tempWhitelistSize = data.whitelist.length;
 
         // Add whitelisted domains in the UI with buttons to delete each one
         data.whitelist.forEach((domain) => {
@@ -43,6 +47,8 @@ chrome.storage.local.get(['whitelist', 'urls'], data => {
                 domain: domain
             });
             parent.remove();
+            tempWhitelistSize--;
+            u(whitelistSize).text(tempWhitelistSize);
         });
 
         // Add whitelist and blacklist counts
