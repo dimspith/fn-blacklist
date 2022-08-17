@@ -30,17 +30,17 @@
                     <label class="label">Is the domain serving fake news?</label>
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="is-fake" value="true" required>
-                            Yes
+                            <input id="is-not-fake" type="radio" name="is-fake" value="false" checked="checked" required>
+                            No
                         </label>
                         <label class="radio">
-                            <input type="radio" name="is-fake" value="false" required>
-                            No
+                            <input id="is-fake" type="radio" name="is-fake" value="true" required>
+                            Yes
                         </label>
                     </div>
                 </div>
 
-                <div class="fake-news-data field mb-4">
+                <div class="fake-news-data field mb-4 is-hidden">
                     <label class="label my-2">Political Bias</label>
                     <div class="columns is-multiline">
                         <div class="column is-full control">
