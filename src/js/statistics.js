@@ -5,8 +5,6 @@ const blacklist = u(".blacklist-list");
 const whitelistSize = u(".whitelist-size");
 const blacklistSize = u(".blacklist-size");
 
-
-
 const getWhitelistHTML = (domain) => {
     return `
 <span class="is-size-6 whitelist-elem tag is-white column is-full">
@@ -20,6 +18,29 @@ const getBlacklistHTML = (domain) => {
 <span class="is-size-6 blacklist-elem tag is-white column is-full">
     <a href="http://${domain}" target="_blank" class="mr-auto">${domain}</a>
 </span>`;
+};
+
+const activateDeleteButtons = () => {
+    u(".whitelist-delete").on('click', function() {
+        const domain = u(this).parent().find(".whitelist-domain").text();
+        const parent = u(this).parent();
+        chrome.runtime.sendMessage({
+            message: "toggle-whitelist",
+            domain: domain
+        });
+        parent.remove();
+        u(whitelistSize).text(parseInt((whitelistSize).text()) - 1);
+    });    
+};
+
+const addDomainToWhitelist = (domain) => {
+    chrome.runtime.sendMessage({
+        message: "toggle-whitelist",
+        domain: domain
+    });
+    u(whitelist).append(getWhitelistHTML(domain));
+    u(whitelistSize).text(parseInt((whitelistSize).text()) + 1);    
+    activateDeleteButtons();
 };
 
 chrome.storage.local.get(['whitelist', 'urls'], data => {
@@ -38,18 +59,7 @@ chrome.storage.local.get(['whitelist', 'urls'], data => {
         });
 
         document.getElementById("delete-all").disabled = false;
-
-        u(".whitelist-delete").on('click', function() {
-            const domain = u(this).parent().find(".whitelist-domain").text();
-            const parent = u(this).parent();
-            chrome.runtime.sendMessage({
-                message: "toggle-whitelist",
-                domain: domain
-            });
-            parent.remove();
-            tempWhitelistSize--;
-            u(whitelistSize).text(tempWhitelistSize);
-        });
+        activateDeleteButtons();
 
         // Add whitelist and blacklist counts
         if(data.whitelist) {
@@ -66,3 +76,7 @@ u("#delete-all").on('click', () => {
     u(whitelist).html("");
 });
 
+u(".add-to-whitelist").on('click', () => {
+    const domain = u(".whitelist-domain-input").first().value;
+    addDomainToWhitelist(domain);
+});

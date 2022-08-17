@@ -1,3 +1,7 @@
 #main {
     max-width: 800px;
 }
+
+.whitelist-domain {
+    align-self: center;    
+}
