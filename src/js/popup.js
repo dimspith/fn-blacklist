@@ -39,6 +39,11 @@ const setLastUpdateTime = () => {
 
 // Show a specific warning
 const showWarning = (warning) => {
+    let warnings = [apiWarning, updateWarning, updateSuccess]
+
+    // Hide all warnings
+    warnings.map((warning) => {warning.addClass("is-hidden");});
+
     switch (warning) {
         case "update":
             updateWarning.removeClass("is-hidden");
