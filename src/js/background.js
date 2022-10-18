@@ -132,16 +132,16 @@ const populateLocalStorage = () => {
     });
 
     // Set the last API Update to 0
-    chrome.storage.local.get(['lastAPIUpdate'], data => {
-        if (!data.hasOwnProperty('lastAPIUpdate')) {
-            chrome.storage.local.set({ 'lastAPIUpdate': 0 });
+    chrome.storage.local.get(['APICheckpoint'], data => {
+        if (!data.hasOwnProperty('APICheckpoint')) {
+            chrome.storage.local.set({ 'APICheckpoint': 0 });
         }
     });
 
     // Set the last Client Update to 0
-    chrome.storage.local.get(['lastUpdate'], data => {
-        if (!data.hasOwnProperty('lastUpdate')) {
-            chrome.storage.local.set({ 'lastUpdate': 0 });
+    chrome.storage.local.get(['localCheckpoint'], data => {
+        if (!data.hasOwnProperty('localCheckpoint')) {
+            chrome.storage.local.set({ 'localCheckpoint': 0 });
         }
     });
 
@@ -217,8 +217,8 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     case "update":
         chrome.storage.local.set({
             'urls': request.data.sites,
-            'lastUpdate': Date.now(),
-            'lastAPIUpdate': request.data.lastupdate
+            'localCheckpoint': Date.now(),
+            'APICheckpoint': request.data.checkpoint
         });
         reloadTabListeners();
         sendResponse({ success: true });
@@ -234,8 +234,8 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
                     .filter(function(item) {
                         return request.deletions.indexOf(item) === -1;
                     }).sort(),
-                'lastUpdate': Date.now(),
-                'lastAPIUpdate': request.lastAPIUpdate
+                'localCheckpoint': Date.now(),
+                'APICheckpoint': request.APICheckpoint
             });
         });
         reloadTabListeners();
@@ -258,10 +258,10 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         break;
     case "reset":
         // Set the last client update to 0
-        chrome.storage.local.set({ 'lastUpdate': 0 });
+        chrome.storage.local.set({ 'localCheckpoint': 0 });
 
         // Set the last API update to 0
-        chrome.storage.local.set({ 'lastAPIUpdate': 0 });
+        chrome.storage.local.set({ 'APICheckpoint': 0 });
 
         // Set the whitelist to an empty array
         chrome.storage.local.set({ 'whitelist': [] });

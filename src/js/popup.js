@@ -33,7 +33,7 @@ const toggleExtension = () => {
 // Sets the last update time in the UI and localstorage
 const setLastUpdateTime = () => {
     const current = Date.now();
-    chrome.storage.local.set({ "lastUpdate": current });
+    chrome.storage.local.set({ "localCheckpoint": current });
     lastUpdateElem.html(utils.elapsedTimeToString(current));
 };
 
@@ -66,7 +66,7 @@ const updateWithDiffs = (url) => {
                 message: "update-diff",
                 insertions: data.insertions,
                 deletions: data.deletions,
-                lastAPIUpdate: data.lastupdate,
+                APICheckpoint: data.checkpoint,
             }, function(response) {
                 if (response.success) {
                     updateButton.removeClass("is-loading");
@@ -103,29 +103,28 @@ const updateBlacklist = () => {
 
     updateButton.addClass("is-loading");
 
-    chrome.storage.local.get(["api", "lastAPIUpdate"], (data) => {
+    chrome.storage.local.get(["api", "APICheckpoint"], (data) => {
         // Default Values
-        var fetchURL = new URL(data.api + "/api/fetch/");
-        var lastAPIUpdateURL = new URL(data.api + "/api/latest/");
+        var fetchURL = new URL(`${data.api}/list/get/`);
+        var lastAPIUpdateURL = new URL(`${data.api}/list/last-checkpoint/`);
 
         // Get last API Update
         fetch(lastAPIUpdateURL)
             .then((res) => res.json())
-            .then((json) => json.lastupdate)
-            .then((lastAPIUpdate) => {
+            .then((json) => json.checkpoint)
+            .then((APICheckpoint) => {
                 // If we have the most recent list version, don't update.
-                if (lastAPIUpdate <= data.lastAPIUpdate) {
+                if (APICheckpoint <= data.APICheckpoint) {
                     showWarning("update");
-                    return;
-                }
-
-                // If it's the first time updating, download the whole list,
-                // otherwise, download diffs.
-                if (data.lastAPIUpdate == 0) {
-                    updateWithoutDiffs(fetchURL.href);
                 } else {
-                    fetchURL.searchParams.append("lastupdate", data.lastAPIUpdate);
-                    updateWithDiffs(fetchURL.href);
+                    // If it's the first time updating, download the whole list,
+                    // otherwise, download diffs.
+                    if (data.APICheckpoint == 0) {
+                        updateWithoutDiffs(fetchURL.href);
+                    } else {
+                        fetchURL.searchParams.append("checkpoint", data.APICheckpoint);
+                        updateWithDiffs(fetchURL.href);
+                    }
                 }
             })
             .catch((_) => {
@@ -158,9 +157,9 @@ chrome.storage.local.get(["contributor"], (data) => {
 });
 
 // Show elapsed time since last update
-chrome.storage.local.get(["lastUpdate"], (data) => {
-    if (data.hasOwnProperty("lastUpdate")) {
-        lastUpdateElem.html(utils.elapsedTimeToString(data.lastUpdate));
+chrome.storage.local.get(["localCheckpoint"], (data) => {
+    if (data.hasOwnProperty("localCheckpoint")) {
+        lastUpdateElem.html(utils.elapsedTimeToString(data.localCheckpoint));
     } else {
         lastUpdateElem.html("never");
     }

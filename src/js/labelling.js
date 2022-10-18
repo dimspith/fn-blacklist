@@ -23,7 +23,7 @@ u('form').handle('submit', async e => {
             method: 'POST',
             body: formData
         };
-        fetch(data.api + "/api/label", options )
+        fetch(data.api + "/list/label", options )
             .then( response => response.json() )
             .then( response => {
                 switch(response.result) {
