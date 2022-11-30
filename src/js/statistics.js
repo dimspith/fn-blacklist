@@ -46,15 +46,13 @@ const addDomainToWhitelist = (domain) => {
 chrome.storage.local.get(['whitelist', 'urls'], data => {
     if (data.hasOwnProperty('whitelist')) {
 
-        var tempWhitelistSize = data.whitelist.length;
-
         // Add whitelisted domains in the UI with buttons to delete each one
         data.whitelist.forEach((domain) => {
             u(whitelist).append(getWhitelistHTML(domain));
         });
 
         // Add blacklisted domains in the UI
-        data.urls.forEach((domain) => {
+        data.urls.slice(0, 100).forEach((domain) => {
             u(blacklist).append(getBlacklistHTML(domain));
         });
 
@@ -66,7 +64,7 @@ chrome.storage.local.get(['whitelist', 'urls'], data => {
             u(whitelistSize).text(data.whitelist.length);
         }
         if(data.urls) {
-            u(blacklistSize).text(data.urls.length);            
+            u(blacklistSize).text(data.urls.length);        
         }
     }
 });
