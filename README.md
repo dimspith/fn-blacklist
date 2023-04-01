@@ -5,7 +5,7 @@
 
 This extension detects and blocks known and/or possible fake news sites.
 It leverages a blacklist provided by an external API that collects and serves the domains.
-It can be found [here](https://github.com/dimspith/fnapi).
+It can be found [here](https://github.com/dimspith/fn-api).
 
 ### Tooling used
 - [Bulma CSS](https://bulma.io/): Styling.
